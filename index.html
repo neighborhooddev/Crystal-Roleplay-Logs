@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crystal Roleplay — Development</title>
+
+    <meta
+        name="description"
+        content="Crystal Roleplay — Custom San Andreas Multiplayer Roleplay Project."
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --emerald: #09261F;
+            --gold: #D8B56A;
+
+            --bg: #f5f5f3;
+            --white: #ffffff;
+            --soft: #eeeeeb;
+
+            --text: #171a18;
+            --muted: #6d726f;
+            --border: #dfdfdb;
+
+            --container: 1080px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+
+            font-family: "DM Sans", sans-serif;
+
+            line-height: 1.7;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .hero {
+            min-height: 100vh;
+
+            background: var(--emerald);
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 40px 20px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .hero-circle {
+            position: absolute;
+
+            width: 600px;
+            height: 600px;
+
+            border: 1px solid rgba(216,181,106,.12);
+
+            border-radius: 50%;
+
+            top: -300px;
+            right: -200px;
+
+            animation: rotate 25s linear infinite;
+        }
+
+        .hero-circle-two {
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            border: 1px solid rgba(216,181,106,.08);
+
+            border-radius: 50%;
+
+            bottom: -300px;
+            left: -200px;
+
+            animation: rotateReverse 30s linear infinite;
+        }
+
+        .hero-content {
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 900px;
+        }
+
+        .hero-small {
+            font-size: 12px;
+
+            letter-spacing: 5px;
+
+            text-transform: uppercase;
+
+            color: rgba(255,255,255,.58);
+
+            margin-bottom: 24px;
+
+            animation: fadeUp .9s ease both;
+        }
+
+        .hero-title {
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(48px, 9vw, 88px);
+
+            font-weight: 500;
+
+            line-height: 1;
+
+            letter-spacing: -2px;
+
+            color: var(--gold);
+
+            animation: fadeUp .9s ease .15s both;
+        }
+
+        .hero-subtitle {
+            margin-top: 18px;
+
+            font-size: clamp(15px, 2vw, 20px);
+
+            font-weight: 500;
+
+            letter-spacing: 6px;
+
+            animation: fadeUp .9s ease .3s both;
+        }
+
+        .hero-line {
+            width: 70px;
+            height: 1px;
+
+            background: var(--gold);
+
+            margin: 35px auto;
+
+            animation: lineGrow 1s ease .45s both;
+        }
+
+        .hero-date {
+            font-size: 12px;
+
+            letter-spacing: 2px;
+
+            color: rgba(255,255,255,.5);
+
+            animation: fadeUp .9s ease .6s both;
+        }
+
+        .scroll {
+            position: absolute;
+
+            bottom: 28px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 3px;
+
+            color: rgba(255,255,255,.4);
+
+            animation:
+                fadeUp .8s ease .9s both,
+                floating 2.5s ease-in-out infinite;
+        }
+
+
+        /* =========================================
+           GLOBAL
+        ========================================= */
+
+        .container {
+            width: min(calc(100% - 40px), var(--container));
+
+            margin: auto;
+        }
+
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            margin-bottom: 55px;
+        }
+
+        .eyebrow {
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 3px;
+
+            color: var(--muted);
+
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(36px, 5vw, 52px);
+
+            line-height: 1.15;
+
+            font-weight: 500;
+        }
+
+        .section-description {
+            max-width: 680px;
+
+            margin-top: 18px;
+
+            color: var(--muted);
+
+            font-size: 15px;
+        }
+
+
+        /* =========================================
+           INTRODUCTION
+        ========================================= */
+
+        .introduction {
+            background: var(--white);
+        }
+
+        .intro-grid {
+            display: grid;
+
+            grid-template-columns: .8fr 1.2fr;
+
+            gap: 90px;
+        }
+
+        .intro-heading {
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(30px, 4vw, 45px);
+
+            line-height: 1.25;
+        }
+
+        .intro-text p {
+            color: var(--muted);
+
+            font-size: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .intro-text strong {
+            color: var(--text);
+        }
+
+        .quote {
+            margin-top: 35px;
+
+            padding: 25px 28px;
+
+            background: var(--soft);
+
+            border-left: 2px solid var(--gold);
+
+            font-family: "Playfair Display", serif;
+
+            font-size: 20px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================================
+           PHILOSOPHY
+        ========================================= */
+
+        .philosophy {
+            background: var(--soft);
+        }
+
+        .principles {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .principle-card {
+            background: var(--white);
+
+            padding: 34px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            transition:
+                transform .4s ease,
+                box-shadow .4s ease;
+        }
+
+        .principle-card:hover {
+            transform: translateY(-7px);
+
+            box-shadow: 0 20px 45px rgba(0,0,0,.07);
+        }
+
+        .principle-number {
+            font-size: 11px;
+
+            letter-spacing: 2px;
+
+            color: var(--muted);
+
+            margin-bottom: 22px;
+        }
+
+        .principle-card h3 {
+            font-size: 19px;
+
+            margin-bottom: 12px;
+        }
+
+        .principle-card p {
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           CHANGELOG
+        ========================================= */
+
+        .changelog {
+            background: var(--bg);
+        }
+
+        .changelog-list {
+            position: relative;
+        }
+
+        .changelog-list::before {
+            content: "";
+
+            position: absolute;
+
+            left: 8px;
+
+            top: 0;
+            bottom: 0;
+
+            width: 1px;
+
+            background: var(--border);
+        }
+
+        .changelog-item {
+            position: relative;
+
+            padding-left: 45px;
+
+            margin-bottom: 55px;
+        }
+
+        .changelog-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .changelog-dot {
+            position: absolute;
+
+            left: 0;
+
+            top: 8px;
+
+            width: 17px;
+            height: 17px;
+
+            background: var(--white);
+
+            border: 1px solid #bdbdb8;
+
+            border-radius: 50%;
+        }
+
+        .changelog-dot::after {
+            content: "";
+
+            position: absolute;
+
+            width: 5px;
+            height: 5px;
+
+            background: #777;
+
+            border-radius: 50%;
+
+            top: 5px;
+            left: 5px;
+        }
+
+        .changelog-meta {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 8px;
+        }
+
+        .version {
+            font-size: 22px;
+
+            font-weight: 600;
+        }
+
+        .date {
+            font-size: 12px;
+
+            color: var(--muted);
+
+            letter-spacing: 1px;
+        }
+
+        .changelog-title {
+            font-size: 16px;
+
+            font-weight: 500;
+
+            margin-bottom: 13px;
+        }
+
+        .changelog-description {
+            max-width: 780px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+        }
+
+        .changes {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 9px 35px;
+
+            max-width: 850px;
+        }
+
+        .change {
+            font-size: 14px;
+
+            color: #454946;
+
+            position: relative;
+
+            padding-left: 17px;
+        }
+
+        .change::before {
+            content: "—";
+
+            position: absolute;
+
+            left: 0;
+
+            color: #8b8e8b;
+        }
+
+        .changelog-separator {
+            border: 0;
+
+            border-top: 1px solid var(--border);
+
+            margin: 55px 0;
+        }
+
+
+        /* =========================================
+           QNA
+        ========================================= */
+
+        .qna {
+            background: var(--white);
+        }
+
+        .qna-list {
+            max-width: 900px;
+        }
+
+        .qna-item {
+            border-top: 1px solid var(--border);
+        }
+
+        .qna-item:last-child {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .qna-question {
+            width: 100%;
+
+            border: 0;
+
+            background: transparent;
+
+            padding: 25px 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            text-align: left;
+
+            font-family: "DM Sans", sans-serif;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            color: var(--text);
+
+            cursor: pointer;
+        }
+
+        .qna-icon {
+            flex-shrink: 0;
+
+            width: 28px;
+            height: 28px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+
+            font-weight: 400;
+
+            transition:
+                transform .35s ease,
+                background .35s ease;
+        }
+
+        .qna-item.active .qna-icon {
+            transform: rotate(45deg);
+        }
+
+        .qna-answer {
+            max-height: 0;
+
+            overflow: hidden;
+
+            transition:
+                max-height .45s ease,
+                opacity .35s ease;
+            
+            opacity: 0;
+        }
+
+        .qna-answer-inner {
+            padding: 0 50px 25px 0;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        .qna-item.active .qna-answer {
+            opacity: 1;
+        }
+
+
+        /* =========================================
+           STATUS
+        ========================================= */
+
+        .status {
+            background: var(--soft);
+        }
+
+        .status-grid {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            background: var(--white);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+        }
+
+        .status-card {
+            padding: 32px;
+
+            border-right: 1px solid var(--border);
+        }
+
+        .status-card:last-child {
+            border-right: 0;
+        }
+
+        .status-label {
+            display: block;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+
+            color: var(--muted);
+
+            margin-bottom: 8px;
+        }
+
+        .status-value {
+            font-size: 15px;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        footer {
+            background: #111513;
+
+            text-align: center;
+
+            padding: 60px 20px;
+
+            color: rgba(255,255,255,.55);
+        }
+
+        .footer-name {
+            font-family: "Playfair Display", serif;
+
+            color: var(--gold);
+
+            font-size: 23px;
+
+            margin-bottom: 12px;
+        }
+
+        .copyright {
+            font-size: 13px;
+
+            letter-spacing: .4px;
+        }
+
+        .footer-small {
+            margin-top: 8px;
+
+            font-size: 10px;
+
+            color: rgba(255,255,255,.3);
+        }
+
+
+        /* =========================================
+           ANIMATION
+        ========================================= */
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes lineGrow {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 70px;
+            }
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translate(-50%, 0);
+            }
+
+            50% {
+                transform: translate(-50%, -7px);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotateReverse {
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0);
+            }
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .section {
+                padding: 75px 0;
+            }
+
+            .intro-grid {
+                grid-template-columns: 1fr;
+
+                gap: 35px;
+            }
+
+            .principles {
+                grid-template-columns: 1fr;
+            }
+
+            .changes {
+                grid-template-columns: 1fr;
+            }
+
+            .status-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .status-card:nth-child(2) {
+                border-right: 0;
+            }
+
+            .status-card:nth-child(-n+2) {
+                border-bottom: 1px solid var(--border);
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .container {
+                width: min(calc(100% - 30px), var(--container));
+            }
+
+            .hero-title {
+                font-size: 52px;
+            }
+
+            .hero-subtitle {
+                letter-spacing: 3px;
+            }
+
+            .changelog-meta {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 3px;
+            }
+
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-card {
+                border-right: 0;
+
+                border-bottom: 1px solid var(--border);
+            }
+
+            .status-card:last-child {
+                border-bottom: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+
+                animation-iteration-count: 1 !important;
+
+                scroll-behavior: auto !important;
+
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================= -->
+
+    <header class="hero">
+
+        <div class="hero-circle"></div>
+        <div class="hero-circle-two"></div>
+
+        <div class="hero-content">
+
+            <div class="hero-small">
+                SAN ANDREAS MULTIPLAYER
+            </div>
+
+            <div class="hero-title">
+                Crystal Roleplay
+            </div>
+
+            <div class="hero-subtitle">
+                SAMP SERVER
+            </div>
+
+            <div class="hero-line"></div>
+
+            <div class="hero-date">
+                ESTABLISHED · 08 SEPTEMBER 2026
+            </div>
+
+        </div>
+
+        <div class="scroll">
+            Scroll to explore
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- =========================================
+             INTRODUCTION
+        ========================================= -->
+
+        <section class="section introduction">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <div class="eyebrow">
+                        Introduction
+                    </div>
+
+                    <div class="section-title">
+                        The Foundation
+                    </div>
+
+                </div>
+
+
+                <div class="intro-grid">
+
+                    <div class="intro-heading">
+                        Start from zero.<br>
+                        Build with purpose.
+                    </div>
+
+
+                    <div class="intro-text">
+
+                        <p>
+                            Crystal Roleplay lahir dari sebuah pandangan sederhana:
+                            sebuah project tidak harus dimulai dari sesuatu yang sudah
+                            jadi untuk dapat menjadi sesuatu yang berbeda.
+                        </p>
+
+                        <p>
+                            Sebagai developer, saya memahami bahwa ekosistem
+                            <strong>San Andreas Multiplayer</strong> telah berkembang
+                            selama bertahun-tahun dan memiliki banyak project,
+                            konsep, serta pengalaman yang dapat menjadi referensi
+                            yang sangat baik.
+                        </p>
+
+                        <p>
+                            Namun Crystal Roleplay memilih untuk memberikan perhatian
+                            lebih besar kepada <strong>pondasi</strong>. Project ini
+                            dibangun secara bertahap dari awal, dengan setiap bagian
+                            dikembangkan berdasarkan kebutuhan dan arah yang ingin
+                            dicapai.
+                        </p>
+
+                        <p>
+                            Berbagai konsep yang sudah dikenal dapat menjadi inspirasi.
+                            Sebuah ide yang bagus layak untuk dipelajari dan
+                            dikembangkan kembali menjadi sesuatu yang lebih sesuai
+                            dengan karakter project.
+                        </p>
+
+                        <div class="quote">
+                            “Inspirasi adalah awal dari sebuah ide.
+                            Identitas adalah bagaimana kita membangunnya.”
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             PHILOSOPHY
+        ========================================= -->
+
+        <section class="section philosophy">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <div class="eyebrow">
+                        Development Philosophy
+                    </div>
+
+                    <div class="section-title">
+                        A Different Approach
+                    </div>
+
+                    <div class="section-description">
+                        Crystal Roleplay tidak mengejar jumlah fitur.
+                        Fokus utama adalah membangun dasar yang dapat berkembang
+                        menjadi pengalaman yang memiliki identitas sendiri.
+                    </div>
+
+                </div>
+
+
+                <div class="principles">
+
+                    <div class="principle-card">
+
+                        <div class="principle-number">
+                            01
+                        </div>
+
+                        <h3>
+                            Build From Zero
+                        </h3>
+
+                        <p>
+                            Memulai pengembangan dari pondasi yang dirancang
+                            untuk kebutuhan Crystal Roleplay sendiri.
+                        </p>
+
+                    </div>
+
+
+                    <div class="principle-card">
+
+                        <div class="principle-number">
+                            02
+                        </div>
+
+                        <h3>
+                            Inspired, Not Copied
+                        </h3>
+
+                        <p>
+                            Konsep yang sudah ada dapat menjadi inspirasi,
+                            tetapi bukan alasan untuk membuat sebuah tiruan.
+                        </p>
+
+                    </div>
+
+
+                    <div class="principle-card">
+
+                        <div class="principle-number">
+                            03
+                        </div>
+
+                        <h3>
+                            Designed to Feel Different
+                        </h3>
+
+                        <p>
+                            Setiap tahap pengembangan diarahkan untuk membangun
+                            identitas dan pengalaman yang terasa berbeda.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             CHANGELOG
+        ========================================= -->
+
+        <section class="section changelog">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <div class="eyebrow">
+                        Development History
+                    </div>
+
+                    <div class="section-title">
+                        Changelog
+                    </div>
+
+                    <div class="section-description">
+                        Catatan perkembangan Crystal Roleplay dari waktu ke waktu.
+                    </div>
+
+                </div>
+
+
+                <div class="changelog-list">
+
+
+                    <!-- v0.3 -->
+
+                    <div class="changelog-item">
+
+                        <div class="changelog-dot"></div>
+
+                        <div class="changelog-meta">
+
+                            <div class="version">
+                                v0.3
+                            </div>
+
+                            <div class="date">
+                                08 SEPTEMBER 2026
+                            </div>
+
+                        </div>
+
+                        <div class="changelog-title">
+                            Server Environment
+                        </div>
+
+                        <div class="changelog-description">
+                            Pengembangan mulai diarahkan pada pembentukan
+                            lingkungan dasar server agar pengalaman awal pemain
+                            memiliki kondisi yang konsisten.
+                        </div>
+
+
+                        <div class="changes">
+
+                            <div class="change">
+                                Menetapkan kondisi awal lingkungan server.
+                            </div>
+
+                            <div class="change">
+                                Menyesuaikan kondisi waktu dunia.
+                            </div>
+
+                            <div class="change">
+                                Menyesuaikan pengaturan visual pemain.
+                            </div>
+
+                            <div class="change">
+                                Menyesuaikan tampilan informasi pemain.
+                            </div>
+
+                            <div class="change">
+                                Menyesuaikan beberapa perilaku dasar dunia permainan.
+                            </div>
+
+                            <div class="change">
+                                Menyiapkan environment sebagai fondasi pengembangan berikutnya.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr class="changelog-separator">
+
+
+                    <!-- v0.2 -->
+
+                    <div class="changelog-item">
+
+                        <div class="changelog-dot"></div>
+
+                        <div class="changelog-meta">
+
+                            <div class="version">
+                                v0.2
+                            </div>
+
+                            <div class="date">
+                                08 SEPTEMBER 2026
+                            </div>
+
+                        </div>
+
+                        <div class="changelog-title">
+                            Player State Foundation
+                        </div>
+
+                        <div class="changelog-description">
+                            Memperjelas bagaimana server mengenali kondisi dasar
+                            pemain selama berada dalam siklus permainan.
+                        </div>
+
+
+                        <div class="changes">
+
+                            <div class="change">
+                                Menambahkan pengelolaan status dasar pemain.
+                            </div>
+
+                            <div class="change">
+                                Status pemain mengikuti aktivitas dasar.
+                            </div>
+
+                            <div class="change">
+                                Menangani perubahan kondisi pemain setelah spawn.
+                            </div>
+
+                            <div class="change">
+                                Menangani kondisi pemain ketika meninggalkan server.
+                            </div>
+
+                            <div class="change">
+                                Menangani kondisi dasar setelah pemain mengalami kematian.
+                            </div>
+
+                            <div class="change">
+                                Menyiapkan fondasi player state untuk sistem berikutnya.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr class="changelog-separator">
+
+
+                    <!-- v0.1 -->
+
+                    <div class="changelog-item">
+
+                        <div class="changelog-dot"></div>
+
+                        <div class="changelog-meta">
+
+                            <div class="version">
+                                v0.1
+                            </div>
+
+                            <div class="date">
+                                08 SEPTEMBER 2026
+                            </div>
+
+                        </div>
+
+                        <div class="changelog-title">
+                            Initial Core
+                        </div>
+
+                        <div class="changelog-description">
+                            Versi pertama Crystal Roleplay yang menjadi titik awal
+                            seluruh proses pengembangan project.
+                        </div>
+
+
+                        <div class="changes">
+
+                            <div class="change">
+                                Membuat fondasi awal Crystal Roleplay.
+                            </div>
+
+                            <div class="change">
+                                Menetapkan identitas project.
+                            </div>
+
+                            <div class="change">
+                                Menyiapkan lingkungan dasar project.
+                            </div>
+
+                            <div class="change">
+                                Menyiapkan proses dasar pemain ketika terhubung.
+                            </div>
+
+                            <div class="change">
+                                Menyiapkan proses dasar pemain ketika melakukan spawn.
+                            </div>
+
+                            <div class="change">
+                                Menetapkan arah pengembangan modular.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr class="changelog-separator">
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             Q&A
+        ========================================= -->
+
+        <section class="section qna">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <div class="eyebrow">
+                        Questions & Answers
+                    </div>
+
+                    <div class="section-title">
+                        Q&A
+                    </div>
+
+                    <div class="section-description">
+                        Pertanyaan yang sering muncul mengenai arah,
+                        konsep, dan status Crystal Roleplay.
+                    </div>
+
+                </div>
+
+
+                <div class="qna-list">
+
+
+                    <div class="qna-item">
+
+                        <button class="qna-question">
+
+                            <span>
+                                Apa itu Crystal Roleplay?
+                            </span>
+
+                            <span class="qna-icon">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="qna-answer">
+
+                            <div class="qna-answer-inner">
+                                Crystal Roleplay adalah custom SA-MP roleplay
+                                project yang dikembangkan dari awal dengan fokus
+                                pada fondasi, identitas project, dan pengembangan
+                                sistem secara bertahap.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="qna-item">
+
+                        <button class="qna-question">
+
+                            <span>
+                                Kapan Crystal Roleplay mulai dibuat?
+                            </span>
+
+                            <span class="qna-icon">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="qna-answer">
+
+                            <div class="qna-answer-inner">
+                                Pengembangan Crystal Roleplay dimulai pada
+                                <strong>08 September 2026</strong>.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="qna-item">
+
+                        <button class="qna-question">
+
+                            <span>
+                                Apakah Crystal Roleplay sudah menjadi server publik?
+                            </span>
+
+                            <span class="qna-icon">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="qna-answer">
+
+                            <div class="qna-answer-inner">
+                                Belum. Saat ini Crystal Roleplay masih berada
+                                dalam tahap development dan testing.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="qna-item">
+
+                        <button class="qna-question">
+
+                            <span>
+                                Apakah Crystal Roleplay meniru server lain?
+                            </span>
+
+                            <span class="qna-icon">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="qna-answer">
+
+                            <div class="qna-answer-inner">
+                                Tidak. Referensi dan inspirasi dari ekosistem SA-MP
+                                dapat menjadi bagian dari proses pengembangan,
+                                tetapi Crystal Roleplay tidak dibangun untuk
+                                menjadi replika dari project lain.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="qna-item">
+
+                        <button class="qna-question">
+
+                            <span>
+                                Mengapa project dimulai dari pondasi?
+                            </span>
+
+                            <span class="qna-icon">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="qna-answer">
+
+                            <div class="qna-answer-inner">
+                                Karena sistem yang baik membutuhkan dasar yang jelas.
+                                Crystal Roleplay memilih membangun fondasi terlebih
+                                dahulu sebelum memperluas fitur dan pengalaman gameplay.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="qna-item">
+
+                        <button class="qna-question">
+
+                            <span>
+                                Apakah semua fitur langsung dibuat?
+                            </span>
+
+                            <span class="qna-icon">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="qna-answer">
+
+                            <div class="qna-answer-inner">
+                                Tidak. Pengembangan dilakukan secara bertahap.
+                                Setiap bagian memiliki proses pengembangan dan
+                                pengujian sebelum project bergerak ke tahap berikutnya.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="qna-item">
+
+                        <button class="qna-question">
+
+                            <span>
+                                Kapan Crystal Roleplay akan dirilis?
+                            </span>
+
+                            <span class="qna-icon">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="qna-answer">
+
+                            <div class="qna-answer-inner">
+                                Belum ada tanggal rilis publik yang ditetapkan.
+                                Rilis akan dipertimbangkan setelah fondasi dan
+                                sistem utama mencapai kondisi yang siap.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="qna-item">
+
+                        <button class="qna-question">
+
+                            <span>
+                                Siapa developer Crystal Roleplay?
+                            </span>
+
+                            <span class="qna-icon">
+                                +
+                            </span>
+
+                        </button>
+
+                        <div class="qna-answer">
+
+                            <div class="qna-answer-inner">
+                                Crystal Roleplay dikembangkan oleh
+                                <strong>Muhammad Rizal</strong>.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             STATUS
+        ========================================= -->
+
+        <section class="section status">
+
+            <div class="container">
+
+                <div class="section-header">
+
+                    <div class="eyebrow">
+                        Current Status
+                    </div>
+
+                    <div class="section-title">
+                        Project Overview
+                    </div>
+
+                </div>
+
+
+                <div class="status-grid">
+
+                    <div class="status-card">
+
+                        <span class="status-label">
+                            Project
+                        </span>
+
+                        <div class="status-value">
+                            Crystal Roleplay
+                        </div>
+
+                    </div>
+
+
+                    <div class="status-card">
+
+                        <span class="status-label">
+                            Platform
+                        </span>
+
+                        <div class="status-value">
+                            San Andreas Multiplayer
+                        </div>
+
+                    </div>
+
+
+                    <div class="status-card">
+
+                        <span class="status-label">
+                            Version
+                        </span>
+
+                        <div class="status-value">
+                            v0.3
+                        </div>
+
+                    </div>
+
+
+                    <div class="status-card">
+
+                        <span class="status-label">
+                            Status
+                        </span>
+
+                        <div class="status-value">
+                            In Development
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================= -->
+
+    <footer>
+
+        <div class="footer-name">
+            Crystal Roleplay
+        </div>
+
+        <div class="copyright">
+            © 2026 Muhammad Rizal — Developer of Crystal Roleplay
+        </div>
+
+        <div class="footer-small">
+            San Andreas Multiplayer · Development Project
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         Q&A JAVASCRIPT
+    ========================================= -->
+
+    <script>
+
+        const questions =
+            document.querySelectorAll(".qna-question");
+
+        questions.forEach((question) => {
+
+            question.addEventListener("click", () => {
+
+                const item =
+                    question.parentElement;
+
+                const answer =
+                    item.querySelector(".qna-answer");
+
+                const isActive =
+                    item.classList.contains("active");
+
+
+                // Close every other question
+
+                document
+                    .querySelectorAll(".qna-item.active")
+                    .forEach((activeItem) => {
+
+                        if (activeItem !== item) {
+
+                            activeItem.classList.remove("active");
+
+                            activeItem
+                                .querySelector(".qna-answer")
+                                .style.maxHeight = null;
+
+                        }
+
+                    });
+
+
+                // Toggle current question
+
+                if (!isActive) {
+
+                    item.classList.add("active");
+
+                    answer.style.maxHeight =
+                        answer.scrollHeight + "px";
+
+                } else {
+
+                    item.classList.remove("active");
+
+                    answer.style.maxHeight = null;
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
