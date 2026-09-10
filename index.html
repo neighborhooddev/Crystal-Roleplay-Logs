@@ -1,0 +1,4757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crystal Roleplay — Development Logs</title>
+
+    <meta
+        name="description"
+        content="Crystal Roleplay — Custom San Andreas Multiplayer Roleplay Project."
+    >
+
+    <meta name="theme-color" content="#063c32">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        :root {
+            --emerald-950: #03251f;
+            --emerald-900: #063c32;
+            --emerald-800: #075546;
+            --emerald-700: #08705c;
+            --emerald-600: #0b8a70;
+            --emerald-500: #11a982;
+
+            --white: #ffffff;
+            --white-soft: #f7faf9;
+            --surface: #f2f7f5;
+            --surface-2: #eaf2ef;
+
+            --text: #10221e;
+            --text-soft: #5f706b;
+            --border: #dce8e4;
+
+            --shadow-sm: 0 8px 24px rgba(3,37,31,.06);
+            --shadow-md: 0 18px 50px rgba(3,37,31,.10);
+            --shadow-lg: 0 30px 80px rgba(3,37,31,.14);
+
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+
+            --max-width: 1160px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            color: var(--text);
+            background: var(--white-soft);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        ::selection {
+            background: var(--emerald-800);
+            color: white;
+        }
+
+        .container {
+            width: min(calc(100% - 40px), var(--max-width));
+            margin-inline: auto;
+        }
+
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            max-width: 720px;
+            margin-bottom: 48px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 7px 12px;
+            border: 1px solid #cfe0db;
+            border-radius: 999px;
+            background: white;
+            color: var(--emerald-800);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--emerald-500);
+            box-shadow: 0 0 0 5px rgba(17,169,130,.10);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: "Manrope", sans-serif;
+            line-height: 1.15;
+            letter-spacing: -.035em;
+        }
+
+        h2 {
+            font-size: clamp(32px, 5vw, 48px);
+        }
+
+        .section-description {
+            margin-top: 18px;
+            color: var(--text-soft);
+            font-size: 16px;
+            max-width: 650px;
+        }
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 16px 0;
+            transition:
+                background .3s ease,
+                box-shadow .3s ease,
+                padding .3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 11px 0;
+            background: rgba(255,255,255,.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 8px 30px rgba(3,37,31,.08);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-family: "Manrope", sans-serif;
+            font-weight: 800;
+        }
+
+        .brand-mark {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: var(--emerald-900);
+            color: white;
+            box-shadow: 0 8px 20px rgba(6,60,50,.20);
+            font-size: 14px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.05;
+        }
+
+        .brand-name {
+            font-size: 15px;
+        }
+
+        .brand-sub {
+            margin-top: 4px;
+            color: #80918c;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+        }
+
+        .nav-links a {
+            position: relative;
+            color: #5b6c67;
+            font-size: 13px;
+            font-weight: 700;
+            transition: color .25s ease;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            width: 0;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--emerald-600);
+            transition: width .25s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--emerald-800);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-button {
+            padding: 10px 15px;
+            border-radius: 10px;
+            background: var(--emerald-900);
+            color: white !important;
+        }
+
+        .nav-button::after {
+            display: none;
+        }
+
+        .nav-button:hover {
+            background: var(--emerald-700);
+        }
+
+        /* LANGUAGE SWITCHER */
+
+        .language-switcher {
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(3,37,31,.05);
+        }
+
+        .language-button {
+            min-width: 36px;
+            height: 30px;
+            padding: 0 8px;
+            border: 0;
+            border-radius: 7px;
+            background: transparent;
+            color: #71827d;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 800;
+            transition:
+                background .25s ease,
+                color .25s ease,
+                transform .2s ease;
+        }
+
+        .language-button:hover {
+            color: var(--emerald-800);
+        }
+
+        .language-button.active {
+            background: var(--emerald-900);
+            color: white;
+            box-shadow: 0 4px 10px rgba(6,60,50,.16);
+        }
+
+        .language-button:active {
+            transform: scale(.95);
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            position: relative;
+            min-height: 720px;
+            display: flex;
+            align-items: center;
+            padding: 150px 0 100px;
+            background:
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(11,138,112,.13),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 10% 80%,
+                    rgba(6,60,50,.07),
+                    transparent 30%
+                ),
+                white;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            opacity: .45;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(6,60,50,.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6,60,50,.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, black, transparent);
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .orb-one {
+            width: 320px;
+            height: 320px;
+            right: -120px;
+            top: 100px;
+            border: 1px solid rgba(6,60,50,.10);
+        }
+
+        .orb-two {
+            width: 180px;
+            height: 180px;
+            right: 100px;
+            top: 180px;
+            border: 1px solid rgba(6,60,50,.08);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 820px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 22px;
+            padding: 8px 13px;
+            border: 1px solid #d3e5df;
+            border-radius: 999px;
+            background: rgba(255,255,255,.88);
+            color: var(--emerald-800);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #19a878;
+            box-shadow: 0 0 0 5px rgba(25,168,120,.10);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 4px rgba(25,168,120,.10);
+            }
+            50% {
+                box-shadow: 0 0 0 9px rgba(25,168,120,.02);
+            }
+        }
+
+        .hero h1 {
+            max-width: 850px;
+            font-size: clamp(44px, 7vw, 78px);
+            color: var(--emerald-950);
+        }
+
+        .hero h1 span {
+            color: var(--emerald-600);
+        }
+
+        .hero-description {
+            max-width: 680px;
+            margin-top: 25px;
+            color: #60726d;
+            font-size: 18px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 34px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                background .25s ease;
+        }
+
+        .button-primary {
+            background: var(--emerald-900);
+            color: white;
+            box-shadow: 0 12px 30px rgba(6,60,50,.18);
+        }
+
+        .button-primary:hover {
+            transform: translateY(-3px);
+            background: var(--emerald-700);
+            box-shadow: 0 18px 35px rgba(6,60,50,.23);
+        }
+
+        .button-secondary {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--emerald-900);
+        }
+
+        .button-secondary:hover {
+            transform: translateY(-3px);
+            border-color: #bdd4cc;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+            margin-top: 45px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .meta-label {
+            color: #8a9a96;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: var(--emerald-950);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        /* =========================================================
+           ABOUT
+        ========================================================= */
+
+        .about {
+            background: var(--surface);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .about-card {
+            position: relative;
+            padding: 38px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: white;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(
+                90deg,
+                var(--emerald-900),
+                var(--emerald-500)
+            );
+        }
+
+        .about-card h3 {
+            font-size: 24px;
+            color: var(--emerald-950);
+        }
+
+        .about-card p {
+            margin-top: 15px;
+            color: var(--text-soft);
+            font-size: 14px;
+        }
+
+        .principles {
+            display: grid;
+            gap: 13px;
+            margin-top: 25px;
+        }
+
+        .principle {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+            padding: 14px;
+            border-radius: 12px;
+            background: var(--surface);
+        }
+
+        .principle-icon {
+            flex: 0 0 32px;
+            display: grid;
+            place-items: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: var(--emerald-900);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .principle strong {
+            display: block;
+            font-size: 13px;
+            color: var(--emerald-950);
+        }
+
+        .principle span {
+            display: block;
+            margin-top: 2px;
+            color: var(--text-soft);
+            font-size: 12px;
+        }
+
+        /* =========================================================
+           STATS
+        ========================================================= */
+
+        .stats {
+            background: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat {
+            padding: 30px;
+            background: white;
+            border-right: 1px solid var(--border);
+        }
+
+        .stat:last-child {
+            border-right: 0;
+        }
+
+        .stat-number {
+            font-family: "Manrope", sans-serif;
+            color: var(--emerald-800);
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -.04em;
+        }
+
+        .stat-label {
+            margin-top: 5px;
+            color: var(--text-soft);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           CHANGELOG
+        ========================================================= */
+
+        .changelog {
+            background: var(--surface);
+        }
+
+        .timeline {
+            position: relative;
+            display: grid;
+            gap: 22px;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 25px;
+            top: 28px;
+            bottom: 28px;
+            width: 1px;
+            background: #cdded8;
+        }
+
+        .log-card {
+            position: relative;
+            padding: 30px 30px 30px 72px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease,
+                border-color .3s ease;
+        }
+
+        .log-card:hover {
+            transform: translateY(-4px);
+            border-color: #c4d9d2;
+            box-shadow: var(--shadow-md);
+        }
+
+        .log-marker {
+            position: absolute;
+            left: 14px;
+            top: 28px;
+            display: grid;
+            place-items: center;
+            width: 24px;
+            height: 24px;
+            border: 5px solid var(--surface);
+            border-radius: 50%;
+            background: var(--emerald-700);
+            box-shadow: 0 0 0 1px #bdd3cc;
+            z-index: 2;
+        }
+
+        .log-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .version {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: #e9f5f1;
+            color: var(--emerald-800);
+            font-family: "Manrope", sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .version.current {
+            background: var(--emerald-900);
+            color: white;
+        }
+
+        .log-date {
+            color: #8a9995;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .log-card h3 {
+            margin-top: 15px;
+            color: var(--emerald-950);
+            font-size: 22px;
+        }
+
+        .log-card > p {
+            margin-top: 9px;
+            color: var(--text-soft);
+            font-size: 13px;
+        }
+
+        .log-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 17px;
+        }
+
+        .tag {
+            padding: 5px 8px;
+            border-radius: 7px;
+            background: #f0f5f3;
+            color: #587069;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .code-box {
+            margin-top: 20px;
+            border: 1px solid #d8e6e1;
+            border-radius: 12px;
+            background: #f7faf9;
+            overflow: hidden;
+        }
+
+        .code-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 13px;
+            border-bottom: 1px solid #d8e6e1;
+            color: #71847e;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .code-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #b6c9c2;
+        }
+
+        pre {
+            margin: 0;
+            padding: 17px;
+            overflow-x: auto;
+            color: #24423a;
+            font-family: "Courier New", monospace;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .kw {
+            color: #08705c;
+            font-weight: 700;
+        }
+
+        .fn {
+            color: #315eaa;
+        }
+
+        .str {
+            color: #9a5e20;
+        }
+
+        .num {
+            color: #8d4f92;
+        }
+
+        .comment {
+            color: #81928d;
+        }
+
+        /* =========================================================
+           ARCHITECTURE
+        ========================================================= */
+
+        .architecture {
+            background: white;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .architecture-card {
+            padding: 27px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            transition: .3s ease;
+        }
+
+        .architecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: #bdd5cd;
+        }
+
+        .architecture-number {
+            color: #a5b5b0;
+            font-family: "Manrope", sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .architecture-card h3 {
+            margin-top: 13px;
+            font-size: 19px;
+            color: var(--emerald-950);
+        }
+
+        .architecture-card p {
+            margin-top: 9px;
+            color: var(--text-soft);
+            font-size: 12px;
+        }
+
+        .architecture-card code {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 5px 8px;
+            border-radius: 7px;
+            background: #eef5f2;
+            color: var(--emerald-800);
+            font-size: 10px;
+        }
+
+        /* =========================================================
+           FAQ
+        ========================================================= */
+
+        .faq {
+            background: var(--surface);
+        }
+
+        .faq-list {
+            max-width: 900px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            background: white;
+            overflow: hidden;
+            transition:
+                border-color .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .faq-item.active {
+            border-color: #bfd7cf;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px 22px;
+            border: 0;
+            background: transparent;
+            color: var(--emerald-950);
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .faq-icon {
+            flex: 0 0 28px;
+            display: grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #edf5f2;
+            color: var(--emerald-800);
+            transition: transform .3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows .35s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            grid-template-rows: 1fr;
+        }
+
+        .faq-answer-inner {
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .faq-answer p {
+            padding: 0 22px 21px;
+            color: var(--text-soft);
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           DEVELOPER
+        ========================================================= */
+
+        .developer {
+            background: var(--emerald-950);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .developer::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            right: -220px;
+            top: -250px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 50%;
+        }
+
+        .developer::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            right: -80px;
+            top: -150px;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 50%;
+        }
+
+        .developer-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1.3fr .7fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .developer .eyebrow {
+            border-color: rgba(255,255,255,.12);
+            background: rgba(255,255,255,.05);
+            color: #bfe5da;
+        }
+
+        .developer h2 {
+            color: white;
+        }
+
+        .developer p {
+            max-width: 650px;
+            margin-top: 18px;
+            color: #b6c9c4;
+            font-size: 14px;
+        }
+
+        .developer-name {
+            font-family: "Manrope", sans-serif;
+            font-size: clamp(24px, 4vw, 38px);
+            font-weight: 800;
+            color: white;
+        }
+
+        .developer-role {
+            margin-top: 5px;
+            color: #7ec7b5;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .developer-card {
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,.05);
+            backdrop-filter: blur(15px);
+        }
+
+        .developer-card span {
+            display: block;
+            color: #77908a;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .developer-card strong {
+            display: block;
+            margin-top: 6px;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            padding: 28px 0;
+            background: #021c18;
+            color: #78908a;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .copyright {
+            font-size: 11px;
+        }
+
+        .copyright strong {
+            color: #d6e5e1;
+        }
+
+        .footer-project {
+            color: #6f8881;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           REVEAL
+        ========================================================= */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition:
+                opacity .7s ease,
+                transform .7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 {
+            transition-delay: .08s;
+        }
+
+        .delay-2 {
+            transition-delay: .16s;
+        }
+
+        .delay-3 {
+            transition-delay: .24s;
+        }
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .about-grid,
+            .developer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .architecture-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat:nth-child(2) {
+                border-right: 0;
+            }
+
+            .stat:nth-child(-n+2) {
+                border-bottom: 1px solid var(--border);
+            }
+
+        }
+
+        @media (max-width: 620px) {
+
+            .container {
+                width: min(calc(100% - 28px), var(--max-width));
+            }
+
+            .section {
+                padding: 72px 0;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 130px 0 75px;
+            }
+
+            .hero h1 {
+                font-size: 43px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .hero-meta {
+                gap: 18px;
+            }
+
+            .stats-grid,
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat {
+                border-right: 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .stat:last-child {
+                border-bottom: 0;
+            }
+
+            .about-card {
+                padding: 26px;
+            }
+
+            .log-card {
+                padding: 25px 20px 25px 57px;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .log-marker {
+                left: 9px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .language-switcher {
+                margin-left: auto;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header class="navbar" id="navbar">
+
+    <div class="container nav-inner">
+
+        <a href="#top" class="brand">
+
+            <div class="brand-mark">
+                CR
+            </div>
+
+            <div class="brand-text">
+
+                <span class="brand-name">
+                    Crystal Roleplay
+                </span>
+
+                <span class="brand-sub">
+                    Development Logs
+                </span>
+
+            </div>
+
+        </a>
+
+        <div class="nav-right">
+
+            <nav class="nav-links">
+
+                <a href="#about" data-i18n="nav.about">
+                    About
+                </a>
+
+                <a href="#logs" data-i18n="nav.logs">
+                    Logs
+                </a>
+
+                <a href="#architecture" data-i18n="nav.foundation">
+                    Foundation
+                </a>
+
+                <a href="#faq">
+                    Q&A
+                </a>
+
+                <a href="#developer" class="nav-button" data-i18n="nav.developer">
+                    Developer
+                </a>
+
+            </nav>
+
+            <div class="language-switcher">
+
+                <button
+                    class="language-button active"
+                    data-lang="en"
+                    type="button"
+                >
+                    EN
+                </button>
+
+                <button
+                    class="language-button"
+                    data-lang="id"
+                    type="button"
+                >
+                    ID
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main id="top">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-grid"></div>
+
+        <div class="hero-orb orb-one"></div>
+        <div class="hero-orb orb-two"></div>
+
+        <div class="container">
+
+            <div class="hero-content">
+
+                <div class="status reveal">
+
+                    <span class="status-dot"></span>
+
+                    <span data-i18n="hero.status">
+                        Project In Development
+                    </span>
+
+                </div>
+
+
+                <h1 class="reveal delay-1">
+
+                    <span data-i18n="hero.title1">
+                        Building a different
+                    </span>
+
+                    <span data-i18n="hero.title2">
+                        roleplay experience.
+                    </span>
+
+                </h1>
+
+
+                <p
+                    class="hero-description reveal delay-2"
+                    data-i18n="hero.description"
+                >
+                    Crystal Roleplay is a custom San Andreas Multiplayer
+                    roleplay project built step by step with a focus on
+                    foundation, system structure, consistency, and a unique
+                    identity.
+                </p>
+
+
+                <div class="hero-actions reveal delay-3">
+
+                    <a
+                        href="#logs"
+                        class="button button-primary"
+                        data-i18n="hero.logs"
+                    >
+                        View Development Logs
+                    </a>
+
+                    <a
+                        href="#faq"
+                        class="button button-secondary"
+                    >
+                        Q&A
+                    </a>
+
+                </div>
+
+
+                <div class="hero-meta reveal delay-3">
+
+                    <div class="meta-item">
+
+                        <span
+                            class="meta-label"
+                            data-i18n="meta.project"
+                        >
+                            Project
+                        </span>
+
+                        <span class="meta-value">
+                            Crystal Roleplay
+                        </span>
+
+                    </div>
+
+
+                    <div class="meta-item">
+
+                        <span
+                            class="meta-label"
+                            data-i18n="meta.platform"
+                        >
+                            Platform
+                        </span>
+
+                        <span class="meta-value">
+                            SA-MP
+                        </span>
+
+                    </div>
+
+
+                    <div class="meta-item">
+
+                        <span
+                            class="meta-label"
+                            data-i18n="meta.status"
+                        >
+                            Status
+                        </span>
+
+                        <span
+                            class="meta-value"
+                            data-i18n="status.development"
+                        >
+                            In Development
+                        </span>
+
+                    </div>
+
+
+                    <div class="meta-item">
+
+                        <span
+                            class="meta-label"
+                            data-i18n="meta.developer"
+                        >
+                            Developer
+                        </span>
+
+                        <span class="meta-value">
+                            Muhammad Rizal
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+
+    <section class="section about" id="about">
+
+        <div class="container">
+
+            <div class="about-grid">
+
+                <div class="reveal">
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="about.eyebrow"
+                    >
+                        About The Project
+                    </span>
+
+                    <h2 data-i18n="about.title">
+                        Built from the foundation first.
+                    </h2>
+
+                    <p
+                        class="section-description"
+                        data-i18n="about.description"
+                    >
+                        Crystal Roleplay is not being built by rushing
+                        features. The core foundation is prepared first so
+                        future systems have a clear structure.
+                    </p>
+
+                </div>
+
+
+                <div class="about-card reveal delay-1">
+
+                    <h3 data-i18n="principles.title">
+                        Development Principles
+                    </h3>
+
+                    <p data-i18n="principles.description">
+                        Every development stage is directed toward keeping
+                        the system modular, validated, and easy to expand.
+                    </p>
+
+
+                    <div class="principles">
+
+                        <div class="principle">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <div>
+
+                                <strong data-i18n="principle.one.title">
+                                    Foundation First
+                                </strong>
+
+                                <span data-i18n="principle.one.text">
+                                    Core systems are built before gameplay.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="principle">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <div>
+
+                                <strong data-i18n="principle.two.title">
+                                    Modular Development
+                                </strong>
+
+                                <span data-i18n="principle.two.text">
+                                    Systems are developed in a structured way.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="principle">
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+                            <div>
+
+                                <strong data-i18n="principle.three.title">
+                                    Validation
+                                </strong>
+
+                                <span data-i18n="principle.three.text">
+                                    State, session and lifecycle are validated.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="principle">
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+                            <div>
+
+                                <strong data-i18n="principle.four.title">
+                                    Own Identity
+                                </strong>
+
+                                <span data-i18n="principle.four.text">
+                                    Crystal Roleplay has its own direction and character.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATS -->
+
+    <section class="section stats">
+
+        <div class="container">
+
+            <div class="stats-grid reveal">
+
+                <div class="stat">
+
+                    <div class="stat-number">
+                        v2.9
+                    </div>
+
+                    <div
+                        class="stat-label"
+                        data-i18n="stats.one"
+                    >
+                        Latest Completed Foundation
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-number">
+                        v3.0
+                    </div>
+
+                    <div
+                        class="stat-label"
+                        data-i18n="stats.two"
+                    >
+                        Next Development Milestone
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-number">
+                        50
+                    </div>
+
+                    <div
+                        class="stat-label"
+                        data-i18n="stats.three"
+                    >
+                        Development Server Slots
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-number">
+                        2026
+                    </div>
+
+                    <div
+                        class="stat-label"
+                        data-i18n="stats.four"
+                    >
+                        Project Development Year
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHANGELOG -->
+
+    <section class="section changelog" id="logs">
+
+        <div class="container">
+
+            <div class="section-header reveal">
+
+                <span
+                    class="eyebrow"
+                    data-i18n="logs.eyebrow"
+                >
+                    Development History
+                </span>
+
+                <h2 data-i18n="logs.title">
+                    Development Logs
+                </h2>
+
+                <p
+                    class="section-description"
+                    data-i18n="logs.description"
+                >
+                    Crystal Roleplay development history from its early stage
+                    to the latest foundation milestone.
+                </p>
+
+            </div>
+
+
+            <div class="timeline">
+
+
+                <!-- v0.1 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v0.1
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v01.date"
+                        >
+                            Early Development
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v01.title">
+                        Project Foundation Begins
+                    </h3>
+
+                    <p data-i18n="v01.description">
+                        The early stage of Crystal Roleplay development.
+                        The main focus was establishing the project and
+                        its initial gamemode foundation.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.foundation"
+                        >
+                            Foundation
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.initial"
+                        >
+                            Initial Core
+                        </span>
+
+                        <span class="tag">
+                            SA-MP
+                        </span>
+
+                    </div>
+
+<pre><span class="comment">// Crystal Roleplay</span>
+<span class="comment">// Initial Development Foundation</span>
+
+<span class="kw">project</span> = <span class="str">"Crystal Roleplay"</span>
+<span class="kw">platform</span> = <span class="str">"SA-MP"</span>
+<span class="kw">status</span> = <span class="str">"development"</span></pre>
+
+                </article>
+
+
+                <!-- v0.2 -->
+
+                <article class="log-card reveal delay-1">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v0.2
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v02.date"
+                        >
+                            Core Development
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v02.title">
+                        Core System Foundation
+                    </h3>
+
+                    <p data-i18n="v02.description">
+                        Early development of the core system and player
+                        runtime foundation as the base of the server.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span class="tag">
+                            Core
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.playerstate"
+                        >
+                            Player State
+                        </span>
+
+                        <span class="tag">
+                            Runtime
+                        </span>
+
+                    </div>
+
+<pre><span class="comment">// Core system foundation</span>
+<span class="kw">Player</span> → <span class="fn">Core</span> → <span class="fn">Runtime</span>
+
+<span class="kw">state</span> = <span class="str">foundation</span></pre>
+
+                </article>
+
+
+                <!-- v0.3 -->
+
+                <article class="log-card reveal delay-2">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v0.3
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v03.date"
+                        >
+                            Early Foundation
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v03.title">
+                        Core Refinement
+                    </h3>
+
+                    <p data-i18n="v03.description">
+                        Early refinement before Crystal Roleplay moved
+                        into a more structured foundation architecture.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.refinement"
+                        >
+                            Core Refinement
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.development"
+                        >
+                            Development
+                        </span>
+
+                    </div>
+
+<pre><span class="comment">// Foundation refinement</span>
+<span class="kw">CRP</span> → <span class="str">Core</span> → <span class="str">System Foundation</span></pre>
+
+                </article>
+
+
+                <!-- v0.9 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v0.9
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v09.date"
+                        >
+                            Core Foundation
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v09.title">
+                        Player Lifecycle Foundation
+                    </h3>
+
+                    <p data-i18n="v09.description">
+                        Player lifecycle received a clear structure with
+                        state, session, identity, runtime and system readiness.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.playerstate"
+                        >
+                            Player State
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.session"
+                        >
+                            Session
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.identity"
+                        >
+                            Identity
+                        </span>
+
+                        <span class="tag">
+                            Runtime
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">NONE</span>
+  ↓
+<span class="kw">CONNECTED</span>
+  ↓
+<span class="kw">AUTHENTICATING</span>
+  ↓
+<span class="kw">AUTHENTICATED</span>
+  ↓
+<span class="kw">CHARACTER</span>
+  ↓
+<span class="kw">ACTIVE</span></pre>
+
+                </article>
+
+
+                <!-- v1.0 -->
+
+                <article class="log-card reveal delay-1">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.0
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v10.date"
+                        >
+                            Lifecycle Architecture
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v10.title">
+                        Centralized Player Lifecycle
+                    </h3>
+
+                    <p data-i18n="v10.description">
+                        Lifecycle events were centralized through dedicated
+                        handlers so the main callbacks remained thin and structured.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span class="tag">
+                            Connect
+                        </span>
+
+                        <span class="tag">
+                            Spawn
+                        </span>
+
+                        <span class="tag">
+                            Death
+                        </span>
+
+                        <span class="tag">
+                            Disconnect
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_HandlePlayerConnect</span>(playerid);
+<span class="fn">CRP_HandlePlayerSpawn</span>(playerid);
+<span class="fn">CRP_HandlePlayerDeath</span>(playerid, killerid, reason);
+<span class="fn">CRP_HandlePlayerDisconnect</span>(playerid, reason);</pre>
+
+                </article>
+
+
+                <!-- v1.1 -->
+
+                <article class="log-card reveal delay-2">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.1
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v11.date"
+                        >
+                            Session Foundation
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v11.title">
+                        Player Session ID
+                    </h3>
+
+                    <p data-i18n="v11.description">
+                        Each player session received an ID to distinguish
+                        lifecycle activity between connections.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.sessionid"
+                        >
+                            Session ID
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.binding"
+                        >
+                            Session Binding
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">gPlayerSessionID</span>[playerid]
+<span class="kw">gCRPSessionCounter</span>
+
+<span class="fn">CRP_StartPlayerSession</span>()
+<span class="fn">CRP_EndPlayerSession</span>()</pre>
+
+                </article>
+
+
+                <!-- v1.2 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.2
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v12.date"
+                        >
+                            Identity Foundation
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v12.title">
+                        Player Username Cache
+                    </h3>
+
+                    <p data-i18n="v12.description">
+                        Player identity received a runtime cache to maintain
+                        name consistency and identity validation.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.identity"
+                        >
+                            Identity
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.username"
+                        >
+                            Username Cache
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">gPlayerName</span>[playerid]
+<span class="kw">gPlayerIdentityReady</span>[playerid]
+
+<span class="fn">CRP_InitPlayerIdentity</span>()
+<span class="fn">CRP_ResetPlayerIdentity</span>()</pre>
+
+                </article>
+
+
+                <!-- v1.3 -->
+
+                <article class="log-card reveal delay-1">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.3
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v13.date"
+                        >
+                            State Integrity
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v13.title">
+                        Player State Integrity
+                    </h3>
+
+                    <p data-i18n="v13.description">
+                        State validation was strengthened to ensure players
+                        only move into valid states.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.statevalidation"
+                        >
+                            State Validation
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.transition"
+                        >
+                            Transition
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_IsPlayerStateIntegrityValid</span>()
+<span class="fn">CRP_CanEnterPlayerState</span>()</pre>
+
+                </article>
+
+
+                <!-- v1.4 -->
+
+                <article class="log-card reveal delay-2">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.4
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v14.date"
+                        >
+                            Runtime Integrity
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v14.title">
+                        Player Runtime Integrity
+                    </h3>
+
+                    <p data-i18n="v14.description">
+                        Spawned and dead states received runtime validation
+                        to prevent invalid combinations.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span class="tag">
+                            Runtime
+                        </span>
+
+                        <span class="tag">
+                            Spawn
+                        </span>
+
+                        <span class="tag">
+                            Death
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_SetPlayerSpawnedSafe</span>()
+<span class="fn">CRP_SetPlayerDeadSafe</span>()
+
+<span class="comment">// spawned = true + dead = true → invalid</span></pre>
+
+                </article>
+
+
+                <!-- v1.5 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.5
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v15.date"
+                        >
+                            Lifecycle Hardening
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v15.title">
+                        Session & Lifecycle Validation
+                    </h3>
+
+                    <p data-i18n="v15.description">
+                        Lifecycle validation was strengthened with session
+                        integrity checks before the system continues processing.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.lifecycle"
+                        >
+                            Lifecycle
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.sessionintegrity"
+                        >
+                            Session Integrity
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_IsPlayerSessionIntegrityValid</span>()
+<span class="fn">CRP_IsPlayerLifecycleValid</span>()
+<span class="fn">CRP_IsPlayerLifecycleSessionValid</span>()</pre>
+
+                </article>
+
+
+                <!-- v1.6 -->
+
+                <article class="log-card reveal delay-1">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.6
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v16.date"
+                        >
+                            Data Foundation
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v16.title">
+                        Player Data Foundation
+                    </h3>
+
+                    <p data-i18n="v16.description">
+                        Player Data was introduced as a runtime foundation.
+                        It was not yet an account or database system.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.playerdata"
+                        >
+                            Player Data
+                        </span>
+
+                        <span class="tag">
+                            Runtime
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.integrity"
+                        >
+                            Integrity
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">gPlayerDataReady</span>[playerid]
+<span class="kw">gPlayerDataSessionID</span>[playerid]
+
+<span class="fn">CRP_InitPlayerData</span>()
+<span class="fn">CRP_ResetPlayerData</span>()</pre>
+
+                </article>
+
+
+                <!-- v1.7 -->
+
+                <article class="log-card reveal delay-2">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.7
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v17.date"
+                        >
+                            Spawn Context
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v17.title">
+                        Player Spawn Context
+                    </h3>
+
+                    <p data-i18n="v17.description">
+                        Spawn was no longer treated only as coordinates.
+                        The system began recognizing the reason or context
+                        behind a spawn.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.spawncontext"
+                        >
+                            Spawn Context
+                        </span>
+
+                        <span class="tag">
+                            Register
+                        </span>
+
+                        <span class="tag">
+                            Logout
+                        </span>
+
+                        <span class="tag">
+                            Jail
+                        </span>
+
+                        <span class="tag">
+                            Hospital
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">SPAWN_TYPE_DEFAULT</span>
+<span class="kw">SPAWN_TYPE_CHARACTER</span>
+<span class="kw">SPAWN_TYPE_REGISTER</span>
+<span class="kw">SPAWN_TYPE_LOGOUT</span>
+<span class="kw">SPAWN_TYPE_JAIL</span>
+<span class="kw">SPAWN_TYPE_HOSPITAL</span>
+<span class="kw">SPAWN_TYPE_JOB</span>
+<span class="kw">SPAWN_TYPE_EVENT</span></pre>
+
+                </article>
+
+
+                <!-- v1.8 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.8
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v18.date"
+                        >
+                            Architecture Fix
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v18.title">
+                        Lifecycle Dependency Refinement
+                    </h3>
+
+                    <p data-i18n="v18.description">
+                        Circular dependency between spawn context and lifecycle
+                        was fixed by separating core lifecycle validation.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.dependency"
+                        >
+                            Dependency
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.integrity"
+                        >
+                            Integrity
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.architecture"
+                        >
+                            Architecture
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">CRP_IsPlayerLifecycleCoreValid</span>(playerid)
+
+<span class="comment">// Spawn Context does not call full lifecycle</span></pre>
+
+                </article>
+
+
+                <!-- v1.9 -->
+
+                <article class="log-card reveal delay-1">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v1.9
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v19.date"
+                        >
+                            State History
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v19.title">
+                        Player State History
+                    </h3>
+
+                    <p data-i18n="v19.description">
+                        The system began tracking the previous player state
+                        and the session associated with that state history.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.statehistory"
+                        >
+                            State History
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.previousstate"
+                        >
+                            Previous State
+                        </span>
+
+                        <span class="tag">
+                            Session
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">gPlayerPreviousState</span>[playerid]
+<span class="kw">gPlayerStateSessionID</span>[playerid]
+
+<span class="fn">CRP_GetPlayerPreviousState</span>()</pre>
+
+                </article>
+
+
+                <!-- v2.0 -->
+
+                <article class="log-card reveal delay-2">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.0
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v20.date"
+                        >
+                            Transition Hardening
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v20.title">
+                        State History Transition Validation
+                    </h3>
+
+                    <p data-i18n="v20.description">
+                        State changes received history validation before
+                        the transition was stored as the new state.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.transition"
+                        >
+                            Transition
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.history"
+                        >
+                            History
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.audit"
+                        >
+                            Audit
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_CanUpdatePlayerStateHistory</span>(
+    playerid,
+    newState
+)</pre>
+
+                </article>
+
+
+                <!-- v2.1 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.1
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v21.date"
+                        >
+                            Transition Audit
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v21.title">
+                        State Transition Audit
+                    </h3>
+
+                    <p data-i18n="v21.description">
+                        Transition count and session binding were added
+                        to audit player state transitions.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.audit"
+                        >
+                            Audit
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.transitioncount"
+                        >
+                            Transition Count
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.binding"
+                        >
+                            Session Binding
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">gPlayerStateTransitionCount</span>[playerid]
+<span class="kw">gPlayerStateTransitionSessionID</span>[playerid]</pre>
+
+                </article>
+
+
+                <!-- v2.2 -->
+
+                <article class="log-card reveal delay-1">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.2
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v22.date"
+                        >
+                            Access Foundation
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v22.title">
+                        Player State Access Gate
+                    </h3>
+
+                    <p data-i18n="v22.description">
+                        The access gate ensures players can only use systems
+                        when they are in the required state.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.accessgate"
+                        >
+                            Access Gate
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.stateaccess"
+                        >
+                            State Access
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_IsPlayerStateAllowed</span>()
+<span class="fn">CRP_IsPlayerStateAllowedForSession</span>()</pre>
+
+                </article>
+
+
+                <!-- v2.3 -->
+
+                <article class="log-card reveal delay-2">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.3
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v23.date"
+                        >
+                            Access Level
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v23.title">
+                        Minimum State Access
+                    </h3>
+
+                    <p data-i18n="v23.description">
+                        The access system was expanded with minimum access
+                        levels based on the player state order.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.minimumaccess"
+                        >
+                            Minimum Access
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.accesslevel"
+                        >
+                            Access Level
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_IsPlayerStateAtLeast</span>()
+<span class="fn">CRP_IsPlayerStateAtLeastForSession</span>()</pre>
+
+                </article>
+
+
+                <!-- v2.4 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.4
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v24.date"
+                        >
+                            Access Policy
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v24.title">
+                        Player State Access Policy
+                    </h3>
+
+                    <p data-i18n="v24.description">
+                        Access requirements received their own validation
+                        layer before being used by the access system.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.policy"
+                        >
+                            Policy
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.requirement"
+                        >
+                            Requirement
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.validation"
+                        >
+                            Validation
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_IsValidStateAccessRequirement</span>()
+<span class="fn">CRP_IsPlayerStateAccessPolicyValid</span>()</pre>
+
+                </article>
+
+
+                <!-- v2.5 -->
+
+                <article class="log-card reveal delay-1">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.5
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v25.date"
+                        >
+                            Decision Foundation
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v25.title">
+                        Access Decision Foundation
+                    </h3>
+
+                    <p data-i18n="v25.description">
+                        Access gates were separated from the decision layer
+                        so access results could be determined consistently.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.decision"
+                        >
+                            Decision
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.exactaccess"
+                        >
+                            Exact Access
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.minimumaccess"
+                        >
+                            Minimum Access
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">CRP_ACCESS_RESULT_DENIED</span>  = <span class="num">0</span>
+<span class="kw">CRP_ACCESS_RESULT_ALLOWED</span> = <span class="num">1</span>
+
+<span class="fn">CRP_DecidePlayerStateExactAccess</span>()
+<span class="fn">CRP_DecidePlayerStateMinimumAccess</span>()</pre>
+
+                </article>
+
+
+                <!-- v2.6 -->
+
+                <article class="log-card reveal delay-2">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.6
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v26.date"
+                        >
+                            Decision Reason
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v26.title">
+                        Access Decision Reason Foundation
+                    </h3>
+
+                    <p data-i18n="v26.description">
+                        Decisions no longer only returned true or false.
+                        The system began identifying the reason behind
+                        every access decision.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.reason"
+                        >
+                            Reason
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.decision"
+                        >
+                            Decision
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.validation"
+                        >
+                            Validation
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">INVALID_PLAYER</span>
+<span class="kw">INVALID_REQUIREMENT</span>
+<span class="kw">INVALID_ACCESS_STATE</span>
+<span class="kw">LIFECYCLE_INVALID</span>
+<span class="kw">SESSION_INVALID</span>
+<span class="kw">STATE_MISMATCH</span>
+<span class="kw">STATE_TOO_LOW</span>
+<span class="kw">STATE_ALLOWED</span></pre>
+
+                </article>
+
+
+                <!-- v2.7 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.7
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v27.date"
+                        >
+                            Decision Consistency
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v27.title">
+                        Access Decision Consistency
+                    </h3>
+
+                    <p data-i18n="v27.description">
+                        Result and reason received validation so every
+                        access decision remains consistent.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.consistency"
+                        >
+                            Consistency
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.resultvalidation"
+                        >
+                            Result Validation
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.reasonvalidation"
+                        >
+                            Reason Validation
+                        </span>
+
+                    </div>
+
+<pre><span class="fn">CRP_IsValidPlayerStateAccessResult</span>()
+<span class="fn">CRP_GetPlayerStateAccessResultFromReason</span>()
+<span class="fn">CRP_IsPlayerStateAccessDecisionConsistent</span>()</pre>
+
+                </article>
+
+
+                <!-- v2.8 -->
+
+                <article class="log-card reveal delay-1">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span class="version">
+                            v2.8
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v28.date"
+                        >
+                            Player Context
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v28.title">
+                        Player Context Foundation
+                    </h3>
+
+                    <p data-i18n="v28.description">
+                        Player Context was introduced to bind runtime players
+                        with their current session and state.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.context"
+                        >
+                            Context
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.sessionbinding"
+                        >
+                            Session Binding
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.statebinding"
+                        >
+                            State Binding
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.integrity"
+                        >
+                            Integrity
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">gPlayerContextReady</span>[playerid]
+<span class="kw">gPlayerContextSessionID</span>[playerid]
+<span class="kw">gPlayerContextState</span>[playerid]
+
+<span class="fn">CRP_InitPlayerContext</span>()
+<span class="fn">CRP_UpdatePlayerContextState</span>()</pre>
+
+                </article>
+
+
+                <!-- v2.9 -->
+
+                <article class="log-card reveal delay-2">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span
+                            class="version current"
+                            data-i18n="v29.current"
+                        >
+                            v2.9 — CURRENT
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v29.date"
+                        >
+                            Latest Completed Version
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v29.title">
+                        Player Lifecycle Event Foundation
+                    </h3>
+
+                    <p data-i18n="v29.description">
+                        The latest foundation layer introduces lifecycle events
+                        for connect, spawn, death and disconnect with validation,
+                        session binding, integrity and sequence rules.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.lifecycleevent"
+                        >
+                            Lifecycle Event
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.sequence"
+                        >
+                            Sequence
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.session"
+                        >
+                            Session
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.integrity"
+                        >
+                            Integrity
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.debug"
+                        >
+                            Debug
+                        </span>
+
+                    </div>
+
+<pre><span class="kw">NONE</span>
+<span class="kw">CONNECT</span>
+<span class="kw">SPAWN</span>
+<span class="kw">DEATH</span>
+<span class="kw">DISCONNECT</span>
+
+<span class="fn">CRP_CanHandlePlayerEvent</span>()
+<span class="fn">CRP_RecordPlayerEvent</span>()
+<span class="fn">CRP_IsPlayerLifecycleEventIntegrityValid</span>()</pre>
+
+
+                    <div class="code-box">
+
+                        <div class="code-head">
+
+                            <span data-i18n="v29.sequence">
+                                event sequence
+                            </span>
+
+                            <div class="code-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+
+                        </div>
+
+<pre><span class="kw">CONNECT</span>
+   ↓
+<span class="kw">SPAWN</span>
+   ↓
+<span class="kw">DEATH</span>
+   ↓
+<span class="kw">SPAWN</span>
+   ↓
+<span class="kw">DISCONNECT</span></pre>
+
+                    </div>
+
+                </article>
+
+
+                <!-- v3.0 -->
+
+                <article class="log-card reveal">
+
+                    <div class="log-marker"></div>
+
+                    <div class="log-top">
+
+                        <span
+                            class="version"
+                            data-i18n="v30.badge"
+                        >
+                            v3.0
+                        </span>
+
+                        <span
+                            class="log-date"
+                            data-i18n="v30.date"
+                        >
+                            Next Milestone
+                        </span>
+
+                    </div>
+
+                    <h3 data-i18n="v30.title">
+                        Foundation Expansion
+                    </h3>
+
+                    <p data-i18n="v30.description">
+                        v3.0 is the next stage after the v2.9 lifecycle event
+                        foundation. Its implementation details will be defined
+                        and validated during development.
+                    </p>
+
+                    <div class="log-tags">
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.planned"
+                        >
+                            Planned
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.foundation"
+                        >
+                            Foundation
+                        </span>
+
+                        <span
+                            class="tag"
+                            data-i18n="tag.nextmilestone"
+                        >
+                            Next Milestone
+                        </span>
+
+                    </div>
+
+<pre><span class="comment">// Crystal Roleplay v3.0</span>
+<span class="comment">// Next development milestone</span>
+
+<span class="kw">status</span> = <span class="str">"planned / development"</span>
+<span class="kw">previous</span> = <span class="str">"v2.9"</span>
+<span class="kw">focus</span> = <span class="str">"foundation expansion"</span></pre>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ARCHITECTURE -->
+
+    <section class="section architecture" id="architecture">
+
+        <div class="container">
+
+            <div class="section-header reveal">
+
+                <span
+                    class="eyebrow"
+                    data-i18n="architecture.eyebrow"
+                >
+                    System Direction
+                </span>
+
+                <h2 data-i18n="architecture.title">
+                    Foundation Architecture
+                </h2>
+
+                <p
+                    class="section-description"
+                    data-i18n="architecture.description"
+                >
+                    Crystal Roleplay uses clear responsibility boundaries
+                    so the system can grow without losing its foundation.
+                </p>
+
+            </div>
+
+
+            <div class="architecture-grid">
+
+                <div class="architecture-card reveal">
+
+                    <span class="architecture-number">
+                        01
+                    </span>
+
+                    <h3 data-i18n="architecture.gamemode.title">
+                        Gamemode
+                    </h3>
+
+                    <p data-i18n="architecture.gamemode.text">
+                        The main server brain responsible for core systems
+                        and important lifecycle operations.
+                    </p>
+
+                    <code>
+                        gamemodes/crp.pwn
+                    </code>
+
+                </div>
+
+
+                <div class="architecture-card reveal delay-1">
+
+                    <span class="architecture-number">
+                        02
+                    </span>
+
+                    <h3 data-i18n="architecture.filterscripts.title">
+                        Filterscripts
+                    </h3>
+
+                    <p data-i18n="architecture.filterscripts.text">
+                        Modular systems that can be developed independently.
+                    </p>
+
+                    <code>
+                        filterscripts/
+                    </code>
+
+                </div>
+
+
+                <div class="architecture-card reveal delay-2">
+
+                    <span class="architecture-number">
+                        03
+                    </span>
+
+                    <h3 data-i18n="architecture.includes.title">
+                        Shared Includes
+                    </h3>
+
+                    <p data-i18n="architecture.includes.text">
+                        Shared helpers and modules used when needed by
+                        multiple systems.
+                    </p>
+
+                    <code>
+                        includes/
+                    </code>
+
+                </div>
+
+
+                <div class="architecture-card reveal">
+
+                    <span class="architecture-number">
+                        04
+                    </span>
+
+                    <h3 data-i18n="architecture.account.title">
+                        Account Layer
+                    </h3>
+
+                    <p data-i18n="architecture.account.text">
+                        Authentication and account systems are developed
+                        separately from the core foundation.
+                    </p>
+
+                    <code>
+                        account/
+                    </code>
+
+                </div>
+
+
+                <div class="architecture-card reveal delay-1">
+
+                    <span class="architecture-number">
+                        05
+                    </span>
+
+                    <h3 data-i18n="architecture.character.title">
+                        Character Layer
+                    </h3>
+
+                    <p data-i18n="architecture.character.text">
+                        Character slots, creation, activation and spawning
+                        have their own lifecycle.
+                    </p>
+
+                    <code>
+                        character/
+                    </code>
+
+                </div>
+
+
+                <div class="architecture-card reveal delay-2">
+
+                    <span class="architecture-number">
+                        06
+                    </span>
+
+                    <h3 data-i18n="architecture.storage.title">
+                        Storage
+                    </h3>
+
+                    <p data-i18n="architecture.storage.text">
+                        Persistence is separated so the storage layer can
+                        evolve in the future.
+                    </p>
+
+                    <code>
+                        storage/
+                    </code>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Q&A -->
+
+    <section class="section faq" id="faq">
+
+        <div class="container">
+
+            <div class="section-header reveal">
+
+                <span
+                    class="eyebrow"
+                    data-i18n="faq.eyebrow"
+                >
+                    Frequently Asked Questions
+                </span>
+
+                <h2>
+                    Q&A
+                </h2>
+
+                <p
+                    class="section-description"
+                    data-i18n="faq.description"
+                >
+                    Common questions about Crystal Roleplay and its
+                    development process.
+                </p>
+
+            </div>
+
+
+            <div class="faq-list">
+
+
+                <div class="faq-item reveal">
+
+                    <button class="faq-question" type="button">
+
+                        <span data-i18n="faq.q1">
+                            What is Crystal Roleplay?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <div class="faq-answer-inner">
+
+                            <p data-i18n="faq.a1">
+                                Crystal Roleplay is a custom San Andreas
+                                Multiplayer roleplay project developed by
+                                Muhammad Rizal.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item reveal delay-1">
+
+                    <button class="faq-question" type="button">
+
+                        <span data-i18n="faq.q2">
+                            Is Crystal Roleplay already public?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <div class="faq-answer-inner">
+
+                            <p data-i18n="faq.a2">
+                                Not yet. The project is still in development
+                                and the foundation systems are still being
+                                developed before public release.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item reveal delay-2">
+
+                    <button class="faq-question" type="button">
+
+                        <span data-i18n="faq.q3">
+                            What platform is being used?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <div class="faq-answer-inner">
+
+                            <p data-i18n="faq.a3">
+                                Crystal Roleplay is being developed for
+                                San Andreas Multiplayer (SA-MP).
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item reveal">
+
+                    <button class="faq-question" type="button">
+
+                        <span data-i18n="faq.q4">
+                            Why build the foundation first?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <div class="faq-answer-inner">
+
+                            <p data-i18n="faq.a4">
+                                A large roleplay system needs a consistent
+                                foundation. A strong foundation allows
+                                account, character, gameplay, command and
+                                other systems to be developed with better
+                                structure and control.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item reveal delay-1">
+
+                    <button class="faq-question" type="button">
+
+                        <span data-i18n="faq.q5">
+                            What is the latest foundation version?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <div class="faq-answer-inner">
+
+                            <p data-i18n="faq.a5">
+                                The latest completed foundation is v2.9,
+                                focusing on Player Lifecycle Event
+                                Foundation including validation, session
+                                binding, integrity, sequence and debugging.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item reveal delay-2">
+
+                    <button class="faq-question" type="button">
+
+                        <span data-i18n="faq.q6">
+                            Is Crystal Roleplay copying another server?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <div class="faq-answer-inner">
+
+                            <p data-i18n="faq.a6">
+                                Crystal Roleplay is developed with its own
+                                direction and identity. General references
+                                may be used for learning, but the project's
+                                structure and direction are made specifically
+                                for CRP.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item reveal">
+
+                    <button class="faq-question" type="button">
+
+                        <span data-i18n="faq.q7">
+                            Who is the developer of Crystal Roleplay?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <div class="faq-answer-inner">
+
+                            <p data-i18n="faq.a7">
+                                Crystal Roleplay is developed by
+                                Muhammad Rizal.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="faq-item reveal delay-1">
+
+                    <button class="faq-question" type="button">
+
+                        <span data-i18n="faq.q8">
+                            Where can the project's progress be seen?
+                        </span>
+
+                        <span class="faq-icon">
+                            +
+                        </span>
+
+                    </button>
+
+                    <div class="faq-answer">
+
+                        <div class="faq-answer-inner">
+
+                            <p data-i18n="faq.a8">
+                                This page serves as the development log
+                                for Crystal Roleplay milestones and progress.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DEVELOPER -->
+
+    <section class="section developer" id="developer">
+
+        <div class="container">
+
+            <div class="developer-grid">
+
+                <div class="reveal">
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="developer.eyebrow"
+                    >
+                        Project Developer
+                    </span>
+
+                    <h2 data-i18n="developer.title">
+                        Built by one developer,
+                        developed with a long-term vision.
+                    </h2>
+
+                    <p data-i18n="developer.description">
+                        Crystal Roleplay is a personal project developed
+                        step by step by Muhammad Rizal, with a focus on
+                        structure, consistency and project identity.
+                    </p>
+
+                </div>
+
+
+                <div class="developer-card reveal delay-1">
+
+                    <div class="developer-name">
+                        Muhammad Rizal
+                    </div>
+
+                    <div
+                        class="developer-role"
+                        data-i18n="developer.role"
+                    >
+                        Developer & Creator
+                    </div>
+
+
+                    <div style="height:25px;"></div>
+
+
+                    <span data-i18n="developer.project">
+                        Project
+                    </span>
+
+                    <strong>
+                        Crystal Roleplay
+                    </strong>
+
+
+                    <div style="height:18px;"></div>
+
+
+                    <span data-i18n="developer.platform">
+                        Platform
+                    </span>
+
+                    <strong>
+                        San Andreas Multiplayer
+                    </strong>
+
+
+                    <div style="height:18px;"></div>
+
+
+                    <span data-i18n="developer.status">
+                        Status
+                    </span>
+
+                    <strong data-i18n="status.development">
+                        In Development
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="container footer-inner">
+
+        <div class="copyright">
+
+            © 2026
+            <strong>
+                Muhammad Rizal
+            </strong>
+
+            <span data-i18n="footer.copyright">
+                — Developer & Creator of Crystal Roleplay.
+                All Rights Reserved.
+            </span>
+
+        </div>
+
+        <div
+            class="footer-project"
+            data-i18n="footer.project"
+        >
+            Crystal Roleplay — Development Logs
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    /* =========================================================
+       TRANSLATIONS
+    ========================================================== */
+
+    const translations = {
+
+        en: {
+
+            "nav.about": "About",
+            "nav.logs": "Logs",
+            "nav.foundation": "Foundation",
+            "nav.developer": "Developer",
+
+            "hero.status": "Project In Development",
+            "hero.title1": "Building a different",
+            "hero.title2": "roleplay experience.",
+            "hero.description":
+                "Crystal Roleplay is a custom San Andreas Multiplayer roleplay project built step by step with a focus on foundation, system structure, consistency, and a unique identity.",
+            "hero.logs": "View Development Logs",
+
+            "meta.project": "Project",
+            "meta.platform": "Platform",
+            "meta.status": "Status",
+            "meta.developer": "Developer",
+
+            "status.development": "In Development",
+
+            "about.eyebrow": "About The Project",
+            "about.title": "Built from the foundation first.",
+            "about.description":
+                "Crystal Roleplay is not being built by rushing features. The core foundation is prepared first so future systems have a clear structure.",
+
+            "principles.title": "Development Principles",
+            "principles.description":
+                "Every development stage is directed toward keeping the system modular, validated, and easy to expand.",
+
+            "principle.one.title": "Foundation First",
+            "principle.one.text": "Core systems are built before gameplay.",
+
+            "principle.two.title": "Modular Development",
+            "principle.two.text": "Systems are developed in a structured way.",
+
+            "principle.three.title": "Validation",
+            "principle.three.text": "State, session and lifecycle are validated.",
+
+            "principle.four.title": "Own Identity",
+            "principle.four.text": "Crystal Roleplay has its own direction and character.",
+
+            "stats.one": "Latest Completed Foundation",
+            "stats.two": "Next Development Milestone",
+            "stats.three": "Development Server Slots",
+            "stats.four": "Project Development Year",
+
+            "logs.eyebrow": "Development History",
+            "logs.title": "Development Logs",
+            "logs.description":
+                "Crystal Roleplay development history from its early stage to the latest foundation milestone.",
+
+            "tag.foundation": "Foundation",
+            "tag.initial": "Initial Core",
+            "tag.playerstate": "Player State",
+            "tag.refinement": "Core Refinement",
+            "tag.development": "Development",
+            "tag.session": "Session",
+            "tag.identity": "Identity",
+            "tag.username": "Username Cache",
+            "tag.statevalidation": "State Validation",
+            "tag.transition": "Transition",
+            "tag.sessionid": "Session ID",
+            "tag.binding": "Session Binding",
+            "tag.sessionintegrity": "Session Integrity",
+            "tag.lifecycle": "Lifecycle",
+            "tag.playerdata": "Player Data",
+            "tag.integrity": "Integrity",
+            "tag.spawncontext": "Spawn Context",
+            "tag.dependency": "Dependency",
+            "tag.architecture": "Architecture",
+            "tag.statehistory": "State History",
+            "tag.previousstate": "Previous State",
+            "tag.history": "History",
+            "tag.audit": "Audit",
+            "tag.transitioncount": "Transition Count",
+            "tag.accessgate": "Access Gate",
+            "tag.stateaccess": "State Access",
+            "tag.minimumaccess": "Minimum Access",
+            "tag.accesslevel": "Access Level",
+            "tag.policy": "Policy",
+            "tag.requirement": "Requirement",
+            "tag.validation": "Validation",
+            "tag.decision": "Decision",
+            "tag.exactaccess": "Exact Access",
+            "tag.reason": "Reason",
+            "tag.consistency": "Consistency",
+            "tag.resultvalidation": "Result Validation",
+            "tag.reasonvalidation": "Reason Validation",
+            "tag.context": "Context",
+            "tag.sessionbinding": "Session Binding",
+            "tag.statebinding": "State Binding",
+            "tag.lifecycleevent": "Lifecycle Event",
+            "tag.sequence": "Sequence",
+            "tag.debug": "Debug",
+            "tag.planned": "Planned",
+            "tag.nextmilestone": "Next Milestone",
+
+            "v01.date": "Early Development",
+            "v01.title": "Project Foundation Begins",
+            "v01.description":
+                "The early stage of Crystal Roleplay development. The main focus was establishing the project and its initial gamemode foundation.",
+
+            "v02.date": "Core Development",
+            "v02.title": "Core System Foundation",
+            "v02.description":
+                "Early development of the core system and player runtime foundation as the base of the server.",
+
+            "v03.date": "Early Foundation",
+            "v03.title": "Core Refinement",
+            "v03.description":
+                "Early refinement before Crystal Roleplay moved into a more structured foundation architecture.",
+
+            "v09.date": "Core Foundation",
+            "v09.title": "Player Lifecycle Foundation",
+            "v09.description":
+                "Player lifecycle received a clear structure with state, session, identity, runtime and system readiness.",
+
+            "v10.date": "Lifecycle Architecture",
+            "v10.title": "Centralized Player Lifecycle",
+            "v10.description":
+                "Lifecycle events were centralized through dedicated handlers so the main callbacks remained thin and structured.",
+
+            "v11.date": "Session Foundation",
+            "v11.title": "Player Session ID",
+            "v11.description":
+                "Each player session received an ID to distinguish lifecycle activity between connections.",
+
+            "v12.date": "Identity Foundation",
+            "v12.title": "Player Username Cache",
+            "v12.description":
+                "Player identity received a runtime cache to maintain name consistency and identity validation.",
+
+            "v13.date": "State Integrity",
+            "v13.title": "Player State Integrity",
+            "v13.description":
+                "State validation was strengthened to ensure players only move into valid states.",
+
+            "v14.date": "Runtime Integrity",
+            "v14.title": "Player Runtime Integrity",
+            "v14.description":
+                "Spawned and dead states received runtime validation to prevent invalid combinations.",
+
+            "v15.date": "Lifecycle Hardening",
+            "v15.title": "Session & Lifecycle Validation",
+            "v15.description":
+                "Lifecycle validation was strengthened with session integrity checks before the system continues processing.",
+
+            "v16.date": "Data Foundation",
+            "v16.title": "Player Data Foundation",
+            "v16.description":
+                "Player Data was introduced as a runtime foundation. It was not yet an account or database system.",
+
+            "v17.date": "Spawn Context",
+            "v17.title": "Player Spawn Context",
+            "v17.description":
+                "Spawn was no longer treated only as coordinates. The system began recognizing the reason or context behind a spawn.",
+
+            "v18.date": "Architecture Fix",
+            "v18.title": "Lifecycle Dependency Refinement",
+            "v18.description":
+                "Circular dependency between spawn context and lifecycle was fixed by separating core lifecycle validation.",
+
+            "v19.date": "State History",
+            "v19.title": "Player State History",
+            "v19.description":
+                "The system began tracking the previous player state and the session associated with that state history.",
+
+            "v20.date": "Transition Hardening",
+            "v20.title": "State History Transition Validation",
+            "v20.description":
+                "State changes received history validation before the transition was stored as the new state.",
+
+            "v21.date": "Transition Audit",
+            "v21.title": "State Transition Audit",
+            "v21.description":
+                "Transition count and session binding were added to audit player state transitions.",
+
+            "v22.date": "Access Foundation",
+            "v22.title": "Player State Access Gate",
+            "v22.description":
+                "The access gate ensures players can only use systems when they are in the required state.",
+
+            "v23.date": "Access Level",
+            "v23.title": "Minimum State Access",
+            "v23.description":
+                "The access system was expanded with minimum access levels based on the player state order.",
+
+            "v24.date": "Access Policy",
+            "v24.title": "Player State Access Policy",
+            "v24.description":
+                "Access requirements received their own validation layer before being used by the access system.",
+
+            "v25.date": "Decision Foundation",
+            "v25.title": "Access Decision Foundation",
+            "v25.description":
+                "Access gates were separated from the decision layer so access results could be determined consistently.",
+
+            "v26.date": "Decision Reason",
+            "v26.title": "Access Decision Reason Foundation",
+            "v26.description":
+                "Decisions no longer only returned true or false. The system began identifying the reason behind every access decision.",
+
+            "v27.date": "Decision Consistency",
+            "v27.title": "Access Decision Consistency",
+            "v27.description":
+                "Result and reason received validation so every access decision remains consistent.",
+
+            "v28.date": "Player Context",
+            "v28.title": "Player Context Foundation",
+            "v28.description":
+                "Player Context was introduced to bind runtime players with their current session and state.",
+
+            "v29.current": "v2.9 — CURRENT",
+            "v29.date": "Latest Completed Version",
+            "v29.title": "Player Lifecycle Event Foundation",
+            "v29.description":
+                "The latest foundation layer introduces lifecycle events for connect, spawn, death and disconnect with validation, session binding, integrity and sequence rules.",
+            "v29.sequence": "event sequence",
+
+            "v30.badge": "v3.0",
+            "v30.date": "Next Milestone",
+            "v30.title": "Foundation Expansion",
+            "v30.description":
+                "v3.0 is the next stage after the v2.9 lifecycle event foundation. Its implementation details will be defined and validated during development.",
+
+            "architecture.eyebrow": "System Direction",
+            "architecture.title": "Foundation Architecture",
+            "architecture.description":
+                "Crystal Roleplay uses clear responsibility boundaries so the system can grow without losing its foundation.",
+
+            "architecture.gamemode.title": "Gamemode",
+            "architecture.gamemode.text":
+                "The main server brain responsible for core systems and important lifecycle operations.",
+
+            "architecture.filterscripts.title": "Filterscripts",
+            "architecture.filterscripts.text":
+                "Modular systems that can be developed independently.",
+
+            "architecture.includes.title": "Shared Includes",
+            "architecture.includes.text":
+                "Shared helpers and modules used when needed by multiple systems.",
+
+            "architecture.account.title": "Account Layer",
+            "architecture.account.text":
+                "Authentication and account systems are developed separately from the core foundation.",
+
+            "architecture.character.title": "Character Layer",
+            "architecture.character.text":
+                "Character slots, creation, activation and spawning have their own lifecycle.",
+
+            "architecture.storage.title": "Storage",
+            "architecture.storage.text":
+                "Persistence is separated so the storage layer can evolve in the future.",
+
+            "faq.eyebrow": "Frequently Asked Questions",
+            "faq.description":
+                "Common questions about Crystal Roleplay and its development process.",
+
+            "faq.q1": "What is Crystal Roleplay?",
+            "faq.a1":
+                "Crystal Roleplay is a custom San Andreas Multiplayer roleplay project developed by Muhammad Rizal.",
+
+            "faq.q2": "Is Crystal Roleplay already public?",
+            "faq.a2":
+                "Not yet. The project is still in development and the foundation systems are still being developed before public release.",
+
+            "faq.q3": "What platform is being used?",
+            "faq.a3":
+                "Crystal Roleplay is being developed for San Andreas Multiplayer (SA-MP).",
+
+            "faq.q4": "Why build the foundation first?",
+            "faq.a4":
+                "A large roleplay system needs a consistent foundation. A strong foundation allows account, character, gameplay, command and other systems to be developed with better structure and control.",
+
+            "faq.q5": "What is the latest foundation version?",
+            "faq.a5":
+                "The latest completed foundation is v2.9, focusing on Player Lifecycle Event Foundation including validation, session binding, integrity, sequence and debugging.",
+
+            "faq.q6": "Is Crystal Roleplay copying another server?",
+            "faq.a6":
+                "Crystal Roleplay is developed with its own direction and identity. General references may be used for learning, but the project's structure and direction are made specifically for CRP.",
+
+            "faq.q7": "Who is the developer of Crystal Roleplay?",
+            "faq.a7":
+                "Crystal Roleplay is developed by Muhammad Rizal.",
+
+            "faq.q8": "Where can the project's progress be seen?",
+            "faq.a8":
+                "This page serves as the development log for Crystal Roleplay milestones and progress.",
+
+            "developer.eyebrow": "Project Developer",
+            "developer.title":
+                "Built by one developer, developed with a long-term vision.",
+            "developer.description":
+                "Crystal Roleplay is a personal project developed step by step by Muhammad Rizal, with a focus on structure, consistency and project identity.",
+            "developer.role": "Developer & Creator",
+            "developer.project": "Project",
+            "developer.platform": "Platform",
+            "developer.status": "Status",
+
+            "footer.copyright":
+                "— Developer & Creator of Crystal Roleplay. All Rights Reserved.",
+            "footer.project":
+                "Crystal Roleplay — Development Logs"
+
+        },
+
+
+        id: {
+
+            "nav.about": "Tentang",
+            "nav.logs": "Log",
+            "nav.foundation": "Fondasi",
+            "nav.developer": "Developer",
+
+            "hero.status": "Project Dalam Pengembangan",
+            "hero.title1": "Membangun pengalaman",
+            "hero.title2": "roleplay yang berbeda.",
+            "hero.description":
+                "Crystal Roleplay adalah project custom San Andreas Multiplayer yang dibangun secara bertahap dengan fokus pada fondasi, struktur sistem, konsistensi, dan identitas yang memiliki karakter sendiri.",
+            "hero.logs": "Lihat Development Logs",
+
+            "meta.project": "Project",
+            "meta.platform": "Platform",
+            "meta.status": "Status",
+            "meta.developer": "Developer",
+
+            "status.development": "Dalam Pengembangan",
+
+            "about.eyebrow": "Tentang Project",
+            "about.title": "Dibangun dari fondasi terlebih dahulu.",
+            "about.description":
+                "Crystal Roleplay tidak dibangun dengan mengejar fitur secepat mungkin. Fondasi utama dipersiapkan terlebih dahulu agar sistem yang datang setelahnya memiliki struktur yang jelas.",
+
+            "principles.title": "Prinsip Pengembangan",
+            "principles.description":
+                "Setiap tahap pengembangan diarahkan agar sistem tetap modular, tervalidasi, dan mudah dikembangkan.",
+
+            "principle.one.title": "Foundation First",
+            "principle.one.text": "Sistem inti dibangun sebelum gameplay.",
+
+            "principle.two.title": "Pengembangan Modular",
+            "principle.two.text": "Sistem dikembangkan secara terstruktur.",
+
+            "principle.three.title": "Validasi",
+            "principle.three.text": "State, session, dan lifecycle mendapatkan validasi.",
+
+            "principle.four.title": "Identitas Sendiri",
+            "principle.four.text": "Crystal Roleplay memiliki arah dan karakter sendiri.",
+
+            "stats.one": "Fondasi Terbaru yang Selesai",
+            "stats.two": "Milestone Pengembangan Berikutnya",
+            "stats.three": "Slot Server Development",
+            "stats.four": "Tahun Pengembangan Project",
+
+            "logs.eyebrow": "Riwayat Pengembangan",
+            "logs.title": "Development Logs",
+            "logs.description":
+                "Riwayat pengembangan Crystal Roleplay dari tahap awal hingga milestone fondasi terbaru.",
+
+            "tag.foundation": "Fondasi",
+            "tag.initial": "Core Awal",
+            "tag.playerstate": "Player State",
+            "tag.refinement": "Penyempurnaan Core",
+            "tag.development": "Pengembangan",
+            "tag.session": "Session",
+            "tag.identity": "Identity",
+            "tag.username": "Username Cache",
+            "tag.statevalidation": "Validasi State",
+            "tag.transition": "Transition",
+            "tag.sessionid": "Session ID",
+            "tag.binding": "Session Binding",
+            "tag.sessionintegrity": "Session Integrity",
+            "tag.lifecycle": "Lifecycle",
+            "tag.playerdata": "Player Data",
+            "tag.integrity": "Integrity",
+            "tag.spawncontext": "Spawn Context",
+            "tag.dependency": "Dependency",
+            "tag.architecture": "Arsitektur",
+            "tag.statehistory": "State History",
+            "tag.previousstate": "State Sebelumnya",
+            "tag.history": "History",
+            "tag.audit": "Audit",
+            "tag.transitioncount": "Jumlah Transition",
+            "tag.accessgate": "Access Gate",
+            "tag.stateaccess": "State Access",
+            "tag.minimumaccess": "Minimum Access",
+            "tag.accesslevel": "Access Level",
+            "tag.policy": "Policy",
+            "tag.requirement": "Requirement",
+            "tag.validation": "Validasi",
+            "tag.decision": "Decision",
+            "tag.exactaccess": "Exact Access",
+            "tag.reason": "Reason",
+            "tag.consistency": "Konsistensi",
+            "tag.resultvalidation": "Validasi Result",
+            "tag.reasonvalidation": "Validasi Reason",
+            "tag.context": "Context",
+            "tag.sessionbinding": "Session Binding",
+            "tag.statebinding": "State Binding",
+            "tag.lifecycleevent": "Lifecycle Event",
+            "tag.sequence": "Sequence",
+            "tag.debug": "Debug",
+            "tag.planned": "Direncanakan",
+            "tag.nextmilestone": "Milestone Berikutnya",
+
+            "v01.date": "Pengembangan Awal",
+            "v01.title": "Awal Fondasi Project",
+            "v01.description":
+                "Tahap awal pengembangan Crystal Roleplay. Fokus utama berada pada pembentukan project dan fondasi awal gamemode.",
+
+            "v02.date": "Pengembangan Core",
+            "v02.title": "Fondasi Core System",
+            "v02.description":
+                "Pengembangan awal core system dan player runtime foundation sebagai dasar server.",
+
+            "v03.date": "Fondasi Awal",
+            "v03.title": "Penyempurnaan Core",
+            "v03.description":
+                "Tahap penyempurnaan awal sebelum Crystal Roleplay masuk ke arsitektur foundation yang lebih terstruktur.",
+
+            "v09.date": "Core Foundation",
+            "v09.title": "Player Lifecycle Foundation",
+            "v09.description":
+                "Lifecycle player mulai memiliki struktur yang jelas dengan state, session, identity, runtime, dan system readiness.",
+
+            "v10.date": "Arsitektur Lifecycle",
+            "v10.title": "Centralized Player Lifecycle",
+            "v10.description":
+                "Lifecycle event dipusatkan melalui handler khusus sehingga callback utama tetap tipis dan terstruktur.",
+
+            "v11.date": "Fondasi Session",
+            "v11.title": "Player Session ID",
+            "v11.description":
+                "Setiap session player mendapatkan ID untuk membedakan aktivitas lifecycle antar koneksi.",
+
+            "v12.date": "Fondasi Identity",
+            "v12.title": "Player Username Cache",
+            "v12.description":
+                "Identity player mendapatkan cache runtime untuk menjaga konsistensi nama dan validasi identity.",
+
+            "v13.date": "State Integrity",
+            "v13.title": "Player State Integrity",
+            "v13.description":
+                "Validasi state diperkuat agar player hanya dapat masuk ke state yang valid.",
+
+            "v14.date": "Runtime Integrity",
+            "v14.title": "Player Runtime Integrity",
+            "v14.description":
+                "State spawned dan dead mendapatkan validasi runtime untuk mencegah kombinasi state yang tidak valid.",
+
+            "v15.date": "Lifecycle Hardening",
+            "v15.title": "Session & Lifecycle Validation",
+            "v15.description":
+                "Validasi lifecycle diperkuat dengan pemeriksaan session integrity sebelum sistem melanjutkan proses.",
+
+            "v16.date": "Fondasi Data",
+            "v16.title": "Player Data Foundation",
+            "v16.description":
+                "Player Data diperkenalkan sebagai runtime foundation. Sistem ini belum menjadi account atau database.",
+
+            "v17.date": "Spawn Context",
+            "v17.title": "Player Spawn Context",
+            "v17.description":
+                "Spawn tidak lagi dianggap hanya sebagai koordinat. Sistem mulai mengenali alasan atau konteks dari sebuah spawn.",
+
+            "v18.date": "Perbaikan Arsitektur",
+            "v18.title": "Lifecycle Dependency Refinement",
+            "v18.description":
+                "Circular dependency antara spawn context dan lifecycle diperbaiki dengan memisahkan validasi lifecycle core.",
+
+            "v19.date": "State History",
+            "v19.title": "Player State History",
+            "v19.description":
+                "Sistem mulai mencatat state player sebelumnya serta session yang berkaitan dengan state history tersebut.",
+
+            "v20.date": "Transition Hardening",
+            "v20.title": "State History Transition Validation",
+            "v20.description":
+                "Perubahan state mendapatkan validasi history sebelum transition disimpan sebagai state baru.",
+
+            "v21.date": "Transition Audit",
+            "v21.title": "State Transition Audit",
+            "v21.description":
+                "Transition count dan session binding ditambahkan untuk melakukan audit terhadap state transition player.",
+
+            "v22.date": "Fondasi Access",
+            "v22.title": "Player State Access Gate",
+            "v22.description":
+                "Access gate memastikan player hanya dapat menggunakan sistem ketika berada pada state yang dibutuhkan.",
+
+            "v23.date": "Access Level",
+            "v23.title": "Minimum State Access",
+            "v23.description":
+                "Access system diperluas dengan minimum access level berdasarkan urutan state player.",
+
+            "v24.date": "Access Policy",
+            "v24.title": "Player State Access Policy",
+            "v24.description":
+                "Requirement access mendapatkan layer validasi tersendiri sebelum digunakan oleh access system.",
+
+            "v25.date": "Decision Foundation",
+            "v25.title": "Access Decision Foundation",
+            "v25.description":
+                "Access gate dipisahkan dari decision layer agar hasil access dapat ditentukan secara konsisten.",
+
+            "v26.date": "Decision Reason",
+            "v26.title": "Access Decision Reason Foundation",
+            "v26.description":
+                "Decision tidak lagi hanya menghasilkan true atau false. Sistem mulai mengenali alasan dari setiap access decision.",
+
+            "v27.date": "Decision Consistency",
+            "v27.title": "Access Decision Consistency",
+            "v27.description":
+                "Result dan reason mendapatkan validasi agar setiap access decision tetap konsisten.",
+
+            "v28.date": "Player Context",
+            "v28.title": "Player Context Foundation",
+            "v28.description":
+                "Player Context diperkenalkan untuk mengikat player runtime dengan session dan state yang sedang digunakan.",
+
+            "v29.current": "v2.9 — TERBARU",
+            "v29.date": "Versi Terbaru yang Selesai",
+            "v29.title": "Player Lifecycle Event Foundation",
+            "v29.description":
+                "Layer foundation terbaru memperkenalkan lifecycle event untuk connect, spawn, death, dan disconnect dengan validation, session binding, integrity, serta sequence rules.",
+            "v29.sequence": "event sequence",
+
+            "v30.badge": "v3.0",
+            "v30.date": "Milestone Berikutnya",
+            "v30.title": "Foundation Expansion",
+            "v30.description":
+                "v3.0 menjadi tahap berikutnya setelah Player Lifecycle Event Foundation v2.9. Detail implementasinya akan ditentukan dan divalidasi selama proses pengembangan.",
+
+            "architecture.eyebrow": "Arah Sistem",
+            "architecture.title": "Foundation Architecture",
+            "architecture.description":
+                "Crystal Roleplay menggunakan pembagian tanggung jawab yang jelas agar sistem dapat berkembang tanpa kehilangan fondasinya.",
+
+            "architecture.gamemode.title": "Gamemode",
+            "architecture.gamemode.text":
+                "Otak utama server yang menangani core system dan lifecycle penting.",
+
+            "architecture.filterscripts.title": "Filterscripts",
+            "architecture.filterscripts.text":
+                "Sistem modular yang dapat dikembangkan secara terpisah.",
+
+            "architecture.includes.title": "Shared Includes",
+            "architecture.includes.text":
+                "Helper dan module bersama yang digunakan ketika dibutuhkan oleh beberapa sistem.",
+
+            "architecture.account.title": "Account Layer",
+            "architecture.account.text":
+                "Authentication dan account system dikembangkan terpisah dari core foundation.",
+
+            "architecture.character.title": "Character Layer",
+            "architecture.character.text":
+                "Character slot, creation, activation, dan spawning memiliki lifecycle masing-masing.",
+
+            "architecture.storage.title": "Storage",
+            "architecture.storage.text":
+                "Persistence dipisahkan agar storage layer dapat dikembangkan di masa depan.",
+
+            "faq.eyebrow": "Pertanyaan yang Sering Ditanyakan",
+            "faq.description":
+                "Beberapa pertanyaan umum mengenai Crystal Roleplay dan proses pengembangannya.",
+
+            "faq.q1": "Apa itu Crystal Roleplay?",
+            "faq.a1":
+                "Crystal Roleplay adalah custom San Andreas Multiplayer roleplay project yang dikembangkan oleh Muhammad Rizal.",
+
+            "faq.q2": "Apakah Crystal Roleplay sudah public?",
+            "faq.a2":
+                "Belum. Project masih dalam tahap development dan foundation system masih terus dikembangkan sebelum public release.",
+
+            "faq.q3": "Platform apa yang digunakan?",
+            "faq.a3":
+                "Crystal Roleplay dikembangkan untuk San Andreas Multiplayer (SA-MP).",
+
+            "faq.q4": "Mengapa foundation dibuat terlebih dahulu?",
+            "faq.a4":
+                "Sistem roleplay yang besar membutuhkan fondasi yang konsisten. Fondasi yang kuat memungkinkan account, character, gameplay, command, dan sistem lainnya dikembangkan dengan struktur dan kontrol yang lebih baik.",
+
+            "faq.q5": "Apa versi foundation terbaru?",
+            "faq.a5":
+                "Foundation terbaru yang telah selesai adalah v2.9 dengan fokus pada Player Lifecycle Event Foundation, termasuk validation, session binding, integrity, sequence, dan debugging.",
+
+            "faq.q6": "Apakah Crystal Roleplay meniru server lain?",
+            "faq.a6":
+                "Crystal Roleplay dikembangkan dengan arah dan identitas sendiri. Referensi umum dapat digunakan sebagai pembelajaran, tetapi struktur dan arah project dibuat khusus untuk CRP.",
+
+            "faq.q7": "Siapa developer Crystal Roleplay?",
+            "faq.a7":
+                "Crystal Roleplay dikembangkan oleh Muhammad Rizal.",
+
+            "faq.q8": "Di mana perkembangan project dapat dilihat?",
+            "faq.a8":
+                "Halaman ini digunakan sebagai development log untuk mencatat milestone dan perkembangan Crystal Roleplay.",
+
+            "developer.eyebrow": "Developer Project",
+            "developer.title":
+                "Dibangun oleh satu developer, dikembangkan dengan visi jangka panjang.",
+            "developer.description":
+                "Crystal Roleplay adalah project personal yang dikembangkan secara bertahap oleh Muhammad Rizal dengan fokus pada struktur, konsistensi, dan identitas project.",
+            "developer.role": "Developer & Creator",
+            "developer.project": "Project",
+            "developer.platform": "Platform",
+            "developer.status": "Status",
+
+            "footer.copyright":
+                "— Developer & Creator Crystal Roleplay. All Rights Reserved.",
+            "footer.project":
+                "Crystal Roleplay — Development Logs"
+
+        }
+
+    };
+
+
+    /* =========================================================
+       LANGUAGE SYSTEM
+    ========================================================== */
+
+    const languageButtons =
+        document.querySelectorAll(".language-button");
+
+    const translatableElements =
+        document.querySelectorAll("[data-i18n]");
+
+
+    function setLanguage(language) {
+
+        if (!translations[language]) {
+            language = "en";
+        }
+
+        document.documentElement.lang = language;
+
+        translatableElements.forEach(element => {
+
+            const key = element.dataset.i18n;
+
+            if (!translations[language][key]) {
+                return;
+            }
+
+            element.textContent = translations[language][key];
+
+        });
+
+
+        languageButtons.forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.lang === language
+            );
+
+        });
+
+
+        try {
+
+            localStorage.setItem(
+                "crp-language",
+                language
+            );
+
+        } catch (error) {
+
+            /*
+             * localStorage may be unavailable in some
+             * browser/privacy configurations.
+             */
+
+        }
+
+    }
+
+
+    languageButtons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            setLanguage(
+                button.dataset.lang
+            );
+
+        });
+
+    });
+
+
+    let savedLanguage = "en";
+
+    try {
+
+        savedLanguage =
+            localStorage.getItem("crp-language") || "en";
+
+    } catch (error) {
+
+        savedLanguage = "en";
+
+    }
+
+    setLanguage(savedLanguage);
+
+
+    /* =========================================================
+       NAVBAR SCROLL
+    ========================================================== */
+
+    const navbar =
+        document.getElementById("navbar");
+
+
+    function updateNavbar() {
+
+        if (window.scrollY > 30) {
+
+            navbar.classList.add("scrolled");
+
+        } else {
+
+            navbar.classList.remove("scrolled");
+
+        }
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateNavbar
+    );
+
+    updateNavbar();
+
+
+    /* =========================================================
+       SCROLL REVEAL
+    ========================================================== */
+
+    const revealElements =
+        document.querySelectorAll(".reveal");
+
+
+    const revealObserver =
+        new IntersectionObserver(
+
+            (entries, observer) => {
+
+                entries.forEach(entry => {
+
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    entry.target.classList.add(
+                        "visible"
+                    );
+
+                    observer.unobserve(
+                        entry.target
+                    );
+
+                });
+
+            },
+
+            {
+                threshold: 0.10,
+                rootMargin:
+                    "0px 0px -35px 0px"
+            }
+
+        );
+
+
+    revealElements.forEach(element => {
+
+        revealObserver.observe(element);
+
+    });
+
+
+    /* =========================================================
+       FAQ ACCORDION
+    ========================================================== */
+
+    const faqItems =
+        document.querySelectorAll(".faq-item");
+
+
+    faqItems.forEach(item => {
+
+        const button =
+            item.querySelector(".faq-question");
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const isActive =
+                    item.classList.contains(
+                        "active"
+                    );
+
+
+                faqItems.forEach(
+                    otherItem => {
+
+                        otherItem.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                if (!isActive) {
+
+                    item.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+    /* =========================================================
+       SMOOTH NAVIGATION
+    ========================================================== */
+
+    document
+        .querySelectorAll('a[href^="#"]')
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                function(event) {
+
+                    const targetId =
+                        this.getAttribute("href");
+
+
+                    if (targetId === "#") {
+                        return;
+                    }
+
+
+                    const target =
+                        document.querySelector(
+                            targetId
+                        );
+
+
+                    if (!target) {
+                        return;
+                    }
+
+
+                    event.preventDefault();
+
+
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }
+            );
+
+        });
+
+</script>
+
+</body>
+</html>
