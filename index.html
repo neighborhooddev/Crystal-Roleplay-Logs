@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,46 +8,51 @@
 
     <meta
         name="description"
-        content="Crystal Roleplay Development Logs — A chronological archive of the Crystal Roleplay development process from v0.1 to v3.0."
+        content="Crystal Roleplay — Custom San Andreas Multiplayer Roleplay Project. Development logs, milestones, foundation progress and project information."
     >
 
-    <meta name="theme-color" content="#09261F">
+    <meta name="theme-color" content="#063c32">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
         rel="stylesheet"
     >
 
     <style>
         :root {
-            --emerald: #09261F;
-            --emerald-2: #0D3028;
-            --emerald-3: #123B31;
-            --emerald-4: #17463A;
+            --emerald-950: #03251f;
+            --emerald-900: #063c32;
+            --emerald-800: #075546;
+            --emerald-700: #08705c;
+            --emerald-600: #0b8a70;
+            --emerald-500: #11a982;
 
-            --gold: #D8B56A;
-            --gold-soft: #E8CC91;
+            --white: #ffffff;
+            --white-soft: #f7faf9;
+            --surface: #f2f7f5;
+            --surface-2: #eaf2ef;
 
-            --cream: #F4EFE4;
-            --cream-soft: #D9D3C6;
+            --text: #10221e;
+            --text-soft: #5f706b;
+            --border: #dce8e4;
 
-            --text: #F4EFE4;
-            --muted: #9EA9A4;
+            --success: #16835f;
+            --warning: #b57b16;
+            --danger: #b44c4c;
 
-            --green: #79C69B;
-            --blue: #80B9D8;
-            --red: #D98B8B;
+            --shadow-sm: 0 8px 24px rgba(3, 37, 31, .06);
+            --shadow-md: 0 18px 50px rgba(3, 37, 31, .10);
+            --shadow-lg: 0 30px 80px rgba(3, 37, 31, .14);
 
-            --border: rgba(216, 181, 106, 0.18);
-            --border-soft: rgba(244, 239, 228, 0.08);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
 
-            --shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
-
-            --radius: 18px;
-            --max-width: 1120px;
+            --max-width: 1160px;
         }
 
         * {
@@ -61,23 +66,11 @@
         }
 
         body {
-            background:
-                radial-gradient(
-                    circle at 15% 10%,
-                    rgba(216, 181, 106, 0.08),
-                    transparent 28%
-                ),
-                radial-gradient(
-                    circle at 85% 35%,
-                    rgba(121, 198, 155, 0.05),
-                    transparent 30%
-                ),
-                var(--emerald);
-
+            font-family: "DM Sans", sans-serif;
             color: var(--text);
-            font-family: "Plus Jakarta Sans", sans-serif;
+            background: var(--white-soft);
             line-height: 1.7;
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         a {
@@ -85,97 +78,197 @@
             text-decoration: none;
         }
 
-        button,
-        input {
+        button {
             font: inherit;
         }
 
         ::selection {
-            background: var(--gold);
-            color: var(--emerald);
+            background: var(--emerald-800);
+            color: white;
         }
 
         /* =========================================================
-           HEADER
+           GLOBAL
         ========================================================= */
 
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-
-            background: rgba(9, 38, 31, 0.84);
-            border-bottom: 1px solid var(--border-soft);
+        .container {
+            width: min(calc(100% - 40px), var(--max-width));
+            margin-inline: auto;
         }
 
-        .nav {
-            width: min(var(--max-width), calc(100% - 40px));
-            margin: auto;
+        .section {
+            padding: 100px 0;
+        }
 
-            min-height: 74px;
+        .section-header {
+            max-width: 720px;
+            margin-bottom: 48px;
+        }
 
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 7px 12px;
+            border: 1px solid #cfe0db;
+            border-radius: 999px;
+            background: white;
+            color: var(--emerald-800);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--emerald-500);
+            box-shadow: 0 0 0 5px rgba(17,169,130,.10);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: "Manrope", sans-serif;
+            line-height: 1.15;
+            letter-spacing: -.035em;
+        }
+
+        h2 {
+            font-size: clamp(32px, 5vw, 48px);
+        }
+
+        .section-description {
+            margin-top: 18px;
+            color: var(--text-soft);
+            font-size: 16px;
+            max-width: 650px;
+        }
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 16px 0;
+            transition:
+                background .3s ease,
+                box-shadow .3s ease,
+                padding .3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 11px 0;
+            background: rgba(255,255,255,.90);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 8px 30px rgba(3,37,31,.08);
+        }
+
+        .nav-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
+            gap: 30px;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
-
+            gap: 11px;
+            font-family: "Manrope", sans-serif;
             font-weight: 800;
-            letter-spacing: -0.03em;
         }
 
         .brand-mark {
-            width: 34px;
-            height: 34px;
-
-            border: 1px solid var(--gold);
-            border-radius: 10px;
-
             display: grid;
             place-items: center;
-
-            color: var(--gold);
-            font-family: "Instrument Serif", serif;
-            font-size: 22px;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: var(--emerald-900);
+            color: white;
+            box-shadow: 0 8px 20px rgba(6,60,50,.20);
+            font-size: 14px;
         }
 
-        .brand span {
-            color: var(--cream);
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.05;
         }
 
-        .brand small {
-            display: block;
-            color: var(--gold);
+        .brand-name {
+            font-size: 15px;
+        }
+
+        .brand-sub {
+            margin-top: 4px;
+            color: #80918c;
             font-size: 9px;
-            letter-spacing: 0.18em;
+            font-weight: 700;
+            letter-spacing: .12em;
             text-transform: uppercase;
-            line-height: 1;
-            margin-top: 2px;
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 26px;
         }
 
         .nav-links a {
-            color: var(--muted);
+            position: relative;
+            color: #5b6c67;
             font-size: 13px;
-            font-weight: 600;
-            transition: color 0.2s ease;
+            font-weight: 700;
+            transition: color .25s ease;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -7px;
+            width: 0;
+            height: 2px;
+            border-radius: 999px;
+            background: var(--emerald-600);
+            transition: width .25s ease;
         }
 
         .nav-links a:hover {
-            color: var(--gold-soft);
+            color: var(--emerald-800);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-button {
+            padding: 10px 15px;
+            border-radius: 10px;
+            background: var(--emerald-900);
+            color: white !important;
+        }
+
+        .nav-button::after {
+            display: none;
+        }
+
+        .nav-button:hover {
+            background: var(--emerald-700);
+            color: white !important;
         }
 
         /* =========================================================
@@ -183,383 +276,462 @@
         ========================================================= */
 
         .hero {
-            width: min(var(--max-width), calc(100% - 40px));
-            margin: auto;
-
-            padding: 100px 0 80px;
-
             position: relative;
+            min-height: 720px;
+            display: flex;
+            align-items: center;
+            padding: 150px 0 100px;
+            background:
+                radial-gradient(
+                    circle at 85% 20%,
+                    rgba(11,138,112,.13),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 10% 80%,
+                    rgba(6,60,50,.07),
+                    transparent 30%
+                ),
+                white;
+            overflow: hidden;
         }
 
-        .eyebrow {
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            opacity: .45;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(6,60,50,.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6,60,50,.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, black, transparent);
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+            pointer-events: none;
+        }
+
+        .orb-one {
+            width: 320px;
+            height: 320px;
+            right: -120px;
+            top: 100px;
+            border: 1px solid rgba(6,60,50,.10);
+        }
+
+        .orb-two {
+            width: 180px;
+            height: 180px;
+            right: 100px;
+            top: 180px;
+            border: 1px solid rgba(6,60,50,.08);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 820px;
+        }
+
+        .status {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-
-            color: var(--gold);
-            font-size: 11px;
+            gap: 9px;
+            margin-bottom: 22px;
+            padding: 8px 13px;
+            border: 1px solid #d3e5df;
+            border-radius: 999px;
+            background: rgba(255,255,255,.88);
+            color: var(--emerald-800);
+            font-size: 12px;
             font-weight: 800;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-
-            margin-bottom: 24px;
         }
 
-        .eyebrow::before {
-            content: "";
-            width: 30px;
-            height: 1px;
-            background: var(--gold);
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #19a878;
+            box-shadow: 0 0 0 5px rgba(25,168,120,.10);
+            animation: pulse 2s infinite;
         }
 
-        h1 {
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 4px rgba(25,168,120,.10);
+            }
+            50% {
+                box-shadow: 0 0 0 9px rgba(25,168,120,.02);
+            }
+        }
+
+        .hero h1 {
             max-width: 850px;
-
-            font-family: "Instrument Serif", serif;
-            font-size: clamp(56px, 9vw, 104px);
-            font-weight: 400;
-            line-height: 0.92;
-            letter-spacing: -0.045em;
+            font-size: clamp(44px, 7vw, 78px);
+            color: var(--emerald-950);
         }
 
-        h1 em {
-            color: var(--gold);
+        .hero h1 span {
+            color: var(--emerald-600);
         }
 
         .hero-description {
-            max-width: 700px;
+            max-width: 680px;
+            margin-top: 25px;
+            color: #60726d;
+            font-size: 18px;
+        }
 
-            margin-top: 28px;
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 34px;
+        }
 
-            color: var(--cream-soft);
-            font-size: 16px;
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 46px;
+            padding: 0 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            transition:
+                transform .25s ease,
+                box-shadow .25s ease,
+                background .25s ease;
+        }
+
+        .button-primary {
+            background: var(--emerald-900);
+            color: white;
+            box-shadow: 0 12px 30px rgba(6,60,50,.18);
+        }
+
+        .button-primary:hover {
+            transform: translateY(-3px);
+            background: var(--emerald-700);
+            box-shadow: 0 18px 35px rgba(6,60,50,.23);
+        }
+
+        .button-secondary {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--emerald-900);
+        }
+
+        .button-secondary:hover {
+            transform: translateY(-3px);
+            border-color: #bdd4cc;
+            box-shadow: var(--shadow-sm);
         }
 
         .hero-meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-
-            margin-top: 34px;
+            gap: 28px;
+            margin-top: 45px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
         }
 
-        .badge {
-            border: 1px solid var(--border);
-            background: rgba(216, 181, 106, 0.05);
-
-            color: var(--cream-soft);
-
-            padding: 8px 13px;
-            border-radius: 999px;
-
-            font-size: 11px;
-            font-weight: 700;
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
         }
 
-        .badge.gold {
-            color: var(--gold-soft);
-            border-color: rgba(216, 181, 106, 0.35);
+        .meta-label {
+            color: #8a9a96;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: var(--emerald-950);
+            font-size: 13px;
+            font-weight: 800;
         }
 
         /* =========================================================
-           INTRO CARD
+           ABOUT
         ========================================================= */
 
-        .intro {
-            width: min(var(--max-width), calc(100% - 40px));
-            margin: 0 auto 70px;
+        .about {
+            background: var(--surface);
         }
 
-        .intro-card {
-            padding: 28px 30px;
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 70px;
+            align-items: center;
+        }
 
+        .about-card {
+            position: relative;
+            padding: 38px;
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(216, 181, 106, 0.06),
-                    rgba(255, 255, 255, 0.015)
-                );
-
-            box-shadow: var(--shadow);
+            border-radius: var(--radius-lg);
+            background: white;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
         }
 
-        .intro-card strong {
-            color: var(--gold-soft);
+        .about-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(
+                90deg,
+                var(--emerald-900),
+                var(--emerald-500)
+            );
         }
 
-        .intro-card p {
-            color: var(--cream-soft);
+        .about-card h3 {
+            font-size: 24px;
+            color: var(--emerald-950);
+        }
+
+        .about-card p {
+            margin-top: 15px;
+            color: var(--text-soft);
             font-size: 14px;
         }
 
+        .principles {
+            display: grid;
+            gap: 13px;
+            margin-top: 25px;
+        }
+
+        .principle {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+            padding: 14px;
+            border-radius: 12px;
+            background: var(--surface);
+        }
+
+        .principle-icon {
+            flex: 0 0 32px;
+            display: grid;
+            place-items: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: var(--emerald-900);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .principle strong {
+            display: block;
+            font-size: 13px;
+            color: var(--emerald-950);
+        }
+
+        .principle span {
+            display: block;
+            margin-top: 2px;
+            color: var(--text-soft);
+            font-size: 12px;
+        }
+
         /* =========================================================
-           FILTER
+           STATS
         ========================================================= */
 
-        .toolbar {
-            width: min(var(--max-width), calc(100% - 40px));
-            margin: 0 auto 50px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-
-            flex-wrap: wrap;
+        .stats {
+            background: white;
         }
 
-        .search {
-            position: relative;
-            flex: 1;
-            min-width: 240px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
-        .search input {
-            width: 100%;
-
-            padding: 14px 18px 14px 44px;
-
-            color: var(--cream);
-            background: rgba(255, 255, 255, 0.035);
-
-            border: 1px solid var(--border-soft);
-            border-radius: 12px;
-
-            outline: none;
-
-            transition:
-                border-color 0.2s ease,
-                background 0.2s ease;
+        .stat {
+            padding: 30px;
+            background: white;
+            border-right: 1px solid var(--border);
         }
 
-        .search input:focus {
-            border-color: rgba(216, 181, 106, 0.45);
-            background: rgba(255, 255, 255, 0.055);
+        .stat:last-child {
+            border-right: 0;
         }
 
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-
-            color: var(--gold);
-            font-size: 15px;
+        .stat-number {
+            font-family: "Manrope", sans-serif;
+            color: var(--emerald-800);
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -.04em;
         }
 
-        .version-count {
-            color: var(--muted);
+        .stat-label {
+            margin-top: 5px;
+            color: var(--text-soft);
             font-size: 12px;
             font-weight: 600;
         }
 
         /* =========================================================
-           TIMELINE
+           CHANGELOG
         ========================================================= */
 
-        main {
-            width: min(var(--max-width), calc(100% - 40px));
-            margin: auto;
+        .changelog {
+            background: var(--surface);
         }
 
         .timeline {
             position: relative;
-            padding-bottom: 100px;
+            display: grid;
+            gap: 22px;
         }
 
         .timeline::before {
             content: "";
-
             position: absolute;
-            left: 19px;
-            top: 0;
-            bottom: 0;
-
+            left: 25px;
+            top: 28px;
+            bottom: 28px;
             width: 1px;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    rgba(216, 181, 106, 0.45),
-                    rgba(216, 181, 106, 0.08),
-                    transparent
-                );
+            background: #cdded8;
         }
 
-        .release {
+        .log-card {
             position: relative;
-
-            padding-left: 64px;
-            margin-bottom: 62px;
+            margin-left: 0;
+            padding: 30px 30px 30px 72px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: white;
+            box-shadow: var(--shadow-sm);
+            transition:
+                transform .3s ease,
+                box-shadow .3s ease,
+                border-color .3s ease;
         }
 
-        .timeline-dot {
+        .log-card:hover {
+            transform: translateY(-4px);
+            border-color: #c4d9d2;
+            box-shadow: var(--shadow-md);
+        }
+
+        .log-marker {
             position: absolute;
-
-            left: 10px;
-            top: 7px;
-
-            width: 19px;
-            height: 19px;
-
-            border-radius: 50%;
-
-            background: var(--emerald);
-
-            border: 1px solid var(--gold);
-
-            box-shadow:
-                0 0 0 5px rgba(216, 181, 106, 0.06),
-                0 0 25px rgba(216, 181, 106, 0.12);
-        }
-
-        .release-head {
-            margin-bottom: 22px;
-        }
-
-        .version {
-            display: inline-block;
-
-            color: var(--gold);
-
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-
-        .release h2 {
-            margin-top: 5px;
-
-            font-family: "Instrument Serif", serif;
-            font-size: clamp(34px, 5vw, 50px);
-            font-weight: 400;
-            line-height: 1.05;
-
-            color: var(--cream);
-        }
-
-        .release-subtitle {
-            margin-top: 7px;
-
-            color: var(--muted);
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .release-card {
-            border: 1px solid var(--border-soft);
-            border-radius: var(--radius);
-
-            background:
-                linear-gradient(
-                    145deg,
-                    rgba(255, 255, 255, 0.025),
-                    rgba(255, 255, 255, 0.008)
-                );
-
-            overflow: hidden;
-        }
-
-        .section {
-            padding: 25px 26px;
-
-            border-bottom: 1px solid var(--border-soft);
-        }
-
-        .section:last-child {
-            border-bottom: none;
-        }
-
-        .section-title {
-            margin-bottom: 13px;
-
-            color: var(--gold-soft);
-
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-
-        .section p {
-            color: var(--cream-soft);
-            font-size: 14px;
-        }
-
-        /* =========================================================
-           LISTS
-        ========================================================= */
-
-        .change-list {
-            list-style: none;
-
+            left: 14px;
+            top: 28px;
             display: grid;
-            gap: 9px;
+            place-items: center;
+            width: 24px;
+            height: 24px;
+            border: 5px solid var(--surface);
+            border-radius: 50%;
+            background: var(--emerald-700);
+            box-shadow: 0 0 0 1px #bdd3cc;
+            z-index: 2;
         }
 
-        .change-list li {
-            position: relative;
-
-            padding-left: 21px;
-
-            color: var(--cream-soft);
-            font-size: 13px;
-        }
-
-        .change-list li::before {
-            content: "+";
-
-            position: absolute;
-            left: 0;
-            top: 0;
-
-            color: var(--green);
-            font-weight: 800;
-        }
-
-        .change-list.improved li::before {
-            content: "↗";
-            color: var(--gold);
-        }
-
-        .change-list.removed li::before {
-            content: "−";
-            color: var(--red);
-        }
-
-        /* =========================================================
-           CODE
-        ========================================================= */
-
-        .code-wrap {
-            position: relative;
-
-            border-radius: 13px;
-            overflow: hidden;
-
-            border: 1px solid rgba(255, 255, 255, 0.06);
-
-            background: #061B16;
-        }
-
-        .code-top {
+        .log-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
 
-            padding: 9px 13px;
+        .version {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: #e9f5f1;
+            color: var(--emerald-800);
+            font-family: "Manrope", sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+        }
 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        .version.current {
+            background: var(--emerald-900);
+            color: white;
+        }
 
-            color: #7F918B;
+        .log-date {
+            color: #8a9995;
+            font-size: 11px;
+            font-weight: 700;
+        }
 
+        .log-card h3 {
+            margin-top: 15px;
+            color: var(--emerald-950);
+            font-size: 22px;
+        }
+
+        .log-card > p {
+            margin-top: 9px;
+            color: var(--text-soft);
+            font-size: 13px;
+        }
+
+        .log-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 17px;
+        }
+
+        .tag {
+            padding: 5px 8px;
+            border-radius: 7px;
+            background: #f0f5f3;
+            color: #587069;
             font-size: 10px;
             font-weight: 700;
-            letter-spacing: 0.08em;
+        }
+
+        .code-box {
+            margin-top: 20px;
+            border: 1px solid #d8e6e1;
+            border-radius: 12px;
+            background: #f7faf9;
+            overflow: hidden;
+        }
+
+        .code-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 13px;
+            border-bottom: 1px solid #d8e6e1;
+            color: #71847e;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .05em;
             text-transform: uppercase;
         }
 
@@ -569,52 +741,41 @@
         }
 
         .code-dots span {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #53645F;
+            background: #b6c9c2;
         }
 
         pre {
             margin: 0;
-            padding: 19px;
-
+            padding: 17px;
             overflow-x: auto;
-
-            color: #D9E5DF;
-
-            font-family:
-                "SFMono-Regular",
-                Consolas,
-                "Liberation Mono",
-                monospace;
-
-            font-size: 12px;
-            line-height: 1.75;
+            color: #24423a;
+            font-family: "Courier New", monospace;
+            font-size: 11px;
+            line-height: 1.8;
         }
 
         .kw {
-            color: #D8B56A;
-        }
-
-        .type {
-            color: #80B9D8;
+            color: #08705c;
+            font-weight: 700;
         }
 
         .fn {
-            color: #79C69B;
+            color: #315eaa;
         }
 
         .str {
-            color: #C6D58A;
-        }
-
-        .comment {
-            color: #657872;
+            color: #9a5e20;
         }
 
         .num {
-            color: #C9A6E8;
+            color: #8d4f92;
+        }
+
+        .comment {
+            color: #81928d;
         }
 
         /* =========================================================
@@ -622,122 +783,235 @@
         ========================================================= */
 
         .architecture {
+            background: white;
+        }
+
+        .architecture-grid {
             display: grid;
-            gap: 7px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
 
-            font-family:
-                "SFMono-Regular",
-                Consolas,
-                monospace;
+        .architecture-card {
+            padding: 27px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            background: white;
+            transition: .3s ease;
+        }
 
-            color: #C9D7D1;
+        .architecture-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: #bdd5cd;
+        }
 
+        .architecture-number {
+            color: #a5b5b0;
+            font-family: "Manrope", sans-serif;
             font-size: 12px;
-
-            background: #061B16;
-
-            padding: 20px;
-            border-radius: 12px;
-
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 800;
         }
 
-        .architecture .gold {
-            color: var(--gold);
+        .architecture-card h3 {
+            margin-top: 13px;
+            font-size: 19px;
+            color: var(--emerald-950);
         }
 
-        .architecture .green {
-            color: var(--green);
+        .architecture-card p {
+            margin-top: 9px;
+            color: var(--text-soft);
+            font-size: 12px;
         }
 
-        .architecture .blue {
-            color: var(--blue);
+        .architecture-card code {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 5px 8px;
+            border-radius: 7px;
+            background: #eef5f2;
+            color: var(--emerald-800);
+            font-size: 10px;
         }
 
         /* =========================================================
-           SCOPE GRID
+           Q&A
         ========================================================= */
 
-        .scope-grid {
+        .faq {
+            background: var(--surface);
+        }
+
+        .faq-list {
+            max-width: 900px;
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
-        .scope-box {
-            padding: 16px;
-
-            border-radius: 12px;
-
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid var(--border-soft);
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            background: white;
+            overflow: hidden;
+            transition: border-color .25s ease, box-shadow .25s ease;
         }
 
-        .scope-box h4 {
-            margin-bottom: 9px;
-
-            color: var(--green);
-
-            font-size: 11px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
+        .faq-item.active {
+            border-color: #bfd7cf;
+            box-shadow: var(--shadow-sm);
         }
 
-        .scope-box.not h4 {
-            color: var(--red);
+        .faq-question {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px 22px;
+            border: 0;
+            background: transparent;
+            color: var(--emerald-950);
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 800;
         }
 
-        .scope-box ul {
-            list-style: none;
-
+        .faq-icon {
+            flex: 0 0 28px;
             display: grid;
-            gap: 4px;
-
-            color: var(--cream-soft);
-            font-size: 12px;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #edf5f2;
+            color: var(--emerald-800);
+            transition: transform .3s ease;
         }
 
-        .scope-box li::before {
-            content: "✓ ";
-            color: var(--green);
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
         }
 
-        .scope-box.not li::before {
-            content: "× ";
-            color: var(--red);
+        .faq-answer {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows .35s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            grid-template-rows: 1fr;
+        }
+
+        .faq-answer-inner {
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .faq-answer p {
+            padding: 0 22px 21px;
+            color: var(--text-soft);
+            font-size: 13px;
         }
 
         /* =========================================================
-           FILE TREE
+           DEVELOPER
         ========================================================= */
 
-        .file-tree {
-            padding: 19px;
+        .developer {
+            background: var(--emerald-950);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
 
-            background: #061B16;
-            border-radius: 12px;
+        .developer::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            right: -220px;
+            top: -250px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 50%;
+        }
 
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .developer::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            right: -80px;
+            top: -150px;
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 50%;
+        }
 
-            color: #C9D7D1;
+        .developer-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1.3fr .7fr;
+            gap: 60px;
+            align-items: center;
+        }
 
-            font-family:
-                "SFMono-Regular",
-                Consolas,
-                monospace;
+        .developer .eyebrow {
+            border-color: rgba(255,255,255,.12);
+            background: rgba(255,255,255,.05);
+            color: #bfe5da;
+        }
 
+        .developer h2 {
+            color: white;
+        }
+
+        .developer p {
+            max-width: 650px;
+            margin-top: 18px;
+            color: #b6c9c4;
+            font-size: 14px;
+        }
+
+        .developer-name {
+            font-family: "Manrope", sans-serif;
+            font-size: clamp(24px, 4vw, 38px);
+            font-weight: 800;
+            color: white;
+        }
+
+        .developer-role {
+            margin-top: 5px;
+            color: #7ec7b5;
             font-size: 12px;
-            line-height: 1.8;
-
-            overflow-x: auto;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
         }
 
-        .file-tree .folder {
-            color: var(--gold);
+        .developer-card {
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: var(--radius-lg);
+            background: rgba(255,255,255,.05);
+            backdrop-filter: blur(15px);
         }
 
-        .file-tree .file {
-            color: #AFC0B9;
+        .developer-card span {
+            display: block;
+            color: #77908a;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .developer-card strong {
+            display: block;
+            margin-top: 6px;
+            color: white;
+            font-size: 14px;
         }
 
         /* =========================================================
@@ -745,102 +1019,151 @@
         ========================================================= */
 
         footer {
-            width: min(var(--max-width), calc(100% - 40px));
-            margin: 0 auto;
-
-            padding: 50px 0 40px;
-
-            border-top: 1px solid var(--border-soft);
-
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            flex-wrap: wrap;
+            padding: 28px 0;
+            background: #021c18;
+            color: #78908a;
         }
 
-        footer p {
-            color: var(--muted);
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .copyright {
             font-size: 11px;
         }
 
-        footer strong {
-            color: var(--gold-soft);
+        .copyright strong {
+            color: #d6e5e1;
+        }
+
+        .footer-project {
+            color: #6f8881;
+            font-size: 10px;
+            font-weight: 700;
         }
 
         /* =========================================================
-           HIDDEN RELEASE
+           REVEAL ANIMATION
         ========================================================= */
 
-        .release.hidden {
-            display: none;
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition:
+                opacity .7s ease,
+                transform .7s ease;
         }
 
-        .no-results {
-            display: none;
-
-            padding: 60px 20px;
-
-            text-align: center;
-
-            color: var(--muted);
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .no-results.show {
-            display: block;
+        .delay-1 {
+            transition-delay: .08s;
+        }
+
+        .delay-2 {
+            transition-delay: .16s;
+        }
+
+        .delay-3 {
+            transition-delay: .24s;
         }
 
         /* =========================================================
-           RESPONSIVE
+           MOBILE
         ========================================================= */
 
-        @media (max-width: 700px) {
-
-            .nav {
-                min-height: 66px;
-            }
-
+        @media (max-width: 900px) {
             .nav-links {
                 display: none;
             }
 
-            .hero {
-                padding: 72px 0 60px;
-            }
-
-            .hero-description {
-                font-size: 14px;
-            }
-
-            .timeline::before {
-                left: 13px;
-            }
-
-            .release {
-                padding-left: 42px;
-            }
-
-            .timeline-dot {
-                left: 4px;
-            }
-
-            .release-card {
-                border-radius: 14px;
-            }
-
-            .section {
-                padding: 21px 19px;
-            }
-
-            .scope-grid {
+            .about-grid,
+            .developer-grid {
                 grid-template-columns: 1fr;
             }
 
-            footer {
-                display: block;
+            .architecture-grid {
+                grid-template-columns: 1fr 1fr;
             }
 
-            footer p + p {
-                margin-top: 8px;
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat:nth-child(2) {
+                border-right: 0;
+            }
+
+            .stat:nth-child(-n+2) {
+                border-bottom: 1px solid var(--border);
+            }
+        }
+
+        @media (max-width: 620px) {
+            .container {
+                width: min(calc(100% - 28px), var(--max-width));
+            }
+
+            .section {
+                padding: 72px 0;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 130px 0 75px;
+            }
+
+            .hero h1 {
+                font-size: 43px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .hero-meta {
+                gap: 18px;
+            }
+
+            .stats-grid,
+            .architecture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat {
+                border-right: 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .stat:last-child {
+                border-bottom: 0;
+            }
+
+            .about-card {
+                padding: 26px;
+            }
+
+            .log-card {
+                padding: 25px 20px 25px 57px;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .log-marker {
+                left: 9px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -848,1981 +1171,1426 @@
 
 <body>
 
-<header>
-    <nav class="nav">
+    <!-- =========================================================
+         NAVIGATION
+    ========================================================== -->
 
-        <a href="#" class="brand">
-            <div class="brand-mark">C</div>
+    <header class="navbar" id="navbar">
+        <div class="container nav-inner">
 
-            <div>
-                <span>Crystal Roleplay</span>
-                <small>Development Logs</small>
-            </div>
-        </a>
+            <a href="#top" class="brand">
+                <div class="brand-mark">CR</div>
 
-        <div class="nav-links">
-            <a href="#timeline">Timeline</a>
-            <a href="#architecture">Architecture</a>
-            <a href="#v30">v3.0</a>
+                <div class="brand-text">
+                    <span class="brand-name">Crystal Roleplay</span>
+                    <span class="brand-sub">Development Logs</span>
+                </div>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#about">About</a>
+                <a href="#logs">Logs</a>
+                <a href="#architecture">Foundation</a>
+                <a href="#faq">Q&A</a>
+                <a href="#developer" class="nav-button">Developer</a>
+            </nav>
+
         </div>
+    </header>
 
-    </nav>
-</header>
 
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
 
-<section class="hero">
+    <main id="top">
 
-    <div class="eyebrow">
-        Development Archive
-    </div>
+        <section class="hero">
+            <div class="hero-grid"></div>
+            <div class="hero-orb orb-one"></div>
+            <div class="hero-orb orb-two"></div>
 
-    <h1>
-        Building <em>Crystal</em><br>
-        Roleplay.
-    </h1>
+            <div class="container">
+                <div class="hero-content">
 
-    <p class="hero-description">
-        A chronological development archive documenting the evolution
-        of Crystal Roleplay from its earliest foundation to the
-        Core v3.0 architecture.
-    </p>
-
-    <div class="hero-meta">
-        <span class="badge gold">v0.1 — v3.0</span>
-        <span class="badge">In Development</span>
-        <span class="badge">SA-MP Roleplay Project</span>
-        <span class="badge">Foundation First</span>
-    </div>
-
-</section>
-
-
-<section class="intro">
-
-    <div class="intro-card">
-
-        <p>
-            <strong>Crystal Roleplay Development Logs</strong>
-            are maintained as a chronological record of the project's
-            technical and structural evolution.
-            Each release represents a development stage rather than
-            simply a collection of gameplay features.
-        </p>
-
-        <br>
-
-        <p>
-            The project follows a foundation-first approach:
-            <strong>Foundation → System Dasar → Core Mechanic →
-            Integration → Command → Gameplay.</strong>
-        </p>
-
-    </div>
-
-</section>
-
-
-<div class="toolbar">
-
-    <div class="search">
-
-        <span class="search-icon">⌕</span>
-
-        <input
-            type="search"
-            id="searchInput"
-            placeholder="Search version or development focus..."
-            autocomplete="off"
-        >
-
-    </div>
-
-    <div class="version-count" id="versionCount">
-        32 releases
-    </div>
-
-</div>
-
-
-<main id="timeline">
-
-<div class="timeline">
-
-
-<!-- =========================================================
-     v0.1
-========================================================= -->
-
-<article class="release" data-version="v0.1" data-title="Project Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.1</span>
-        <h2>Project Foundation</h2>
-        <p class="release-subtitle">
-            The beginning of Crystal Roleplay.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Development Focus</div>
-
-            <p>
-                The initial Crystal Roleplay project structure was
-                established. The first objective was to create a clean
-                foundation that could later grow into a modular
-                roleplay framework.
-            </p>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Initial Direction</div>
-
-            <ul class="change-list">
-
-                <li>Crystal Roleplay project initialized.</li>
-                <li>SA-MP gamemode development started.</li>
-                <li>Core server architecture established.</li>
-                <li>Foundation-first development direction defined.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v0.2
-========================================================= -->
-
-<article class="release" data-version="v0.2" data-title="Core Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.2</span>
-        <h2>Core Foundation</h2>
-        <p class="release-subtitle">
-            Beginning of modular server systems.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Initial CRP Core filterscript.</li>
-                <li>Dedicated CRP chat system.</li>
-                <li>Initial separation between core and modular systems.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Structure</div>
-
-            <div class="file-tree">
-
-                <div class="folder">filterscripts/</div>
-                <div>├── <span class="folder">core/</span></div>
-                <div>│   ├── <span class="file">crp_core.pwn</span></div>
-                <div>│   └── <span class="file">crp_chat.pwn</span></div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v0.3
-========================================================= -->
-
-<article class="release" data-version="v0.3" data-title="Account Registration Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.3</span>
-        <h2>Account Foundation</h2>
-        <p class="release-subtitle">
-            Initial account and registration architecture.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Initial account system.</li>
-                <li>Registration system foundation.</li>
-                <li>Registration TextDraw foundation.</li>
-                <li>Local scriptfile persistence direction.</li>
-                <li>Account systems separated from the Core.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Files</div>
-
-            <div class="file-tree">
-
-                <div class="folder">filterscripts/account/</div>
-                <div>├── <span class="file">crp_account.pwn</span></div>
-                <div>├── <span class="file">crp_register.pwn</span></div>
-                <div>└── <span class="file">crp_register_textdraw.pwn</span></div>
-
-                <br>
-
-                <div class="folder">scriptfiles/</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v0.4
-========================================================= -->
-
-<article class="release" data-version="v0.4" data-title="Registration System">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.4</span>
-        <h2>Registration System</h2>
-        <p class="release-subtitle">
-            Registration flow becomes a dedicated modular system.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Registration flow improvements.</li>
-                <li>Password input foundation.</li>
-                <li>Password confirmation flow.</li>
-                <li>Registration UI/TextDraw structure.</li>
-                <li>Registration spawn system foundation.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Files</div>
-
-            <div class="file-tree">
-
-                <div class="folder">filterscripts/account/</div>
-                <div>├── <span class="file">crp_register.pwn</span></div>
-                <div>└── <span class="file">crp_register_textdraw.pwn</span></div>
-
-                <br>
-
-                <div class="folder">filterscripts/spawn/</div>
-                <div>├── <span class="file">crp_register_spawn.pwn</span></div>
-                <div>└── <span class="file">crp_register_spawn_textdraw.pwn</span></div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v0.5
-========================================================= -->
-
-<article class="release" data-version="v0.5" data-title="Login System">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.5</span>
-        <h2>Login System</h2>
-        <p class="release-subtitle">
-            Authentication flow introduced.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Login system foundation.</li>
-                <li>Login TextDraw foundation.</li>
-                <li>Account authentication flow.</li>
-                <li>Session validation direction.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Files</div>
-
-            <div class="file-tree">
-
-                <div class="folder">filterscripts/account/</div>
-                <div>├── <span class="file">crp_login.pwn</span></div>
-                <div>└── <span class="file">crp_login_textdraw.pwn</span></div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v0.6
-========================================================= -->
-
-<article class="release" data-version="v0.6" data-title="Character Slot Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.6</span>
-        <h2>Character Slots</h2>
-        <p class="release-subtitle">
-            Account and character begin to become separate layers.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Character slot foundation.</li>
-                <li>Multiple character support direction.</li>
-                <li>Five character slot architecture.</li>
-                <li>Character selection UI foundation.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Files</div>
-
-            <div class="file-tree">
-
-                <div class="folder">filterscripts/character/</div>
-                <div>├── <span class="file">crp_character_slot.pwn</span></div>
-                <div>└── <span class="file">crp_character_textdraw.pwn</span></div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v0.7
-========================================================= -->
-
-<article class="release" data-version="v0.7" data-title="Character Creation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.7</span>
-        <h2>Character Creation</h2>
-        <p class="release-subtitle">
-            Character creation becomes its own modular layer.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Character creation foundation.</li>
-                <li>Character creation UI foundation.</li>
-                <li>Character data entry direction.</li>
-                <li>Character activation separation.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Files</div>
-
-            <div class="file-tree">
-
-                <div class="folder">filterscripts/character/</div>
-                <div>├── <span class="file">crp_character_create.pwn</span></div>
-                <div>└── <span class="file">crp_character_create_textdraw.pwn</span></div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v0.8
-========================================================= -->
-
-<article class="release" data-version="v0.8" data-title="Character Spawn Integration">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.8</span>
-        <h2>Character &amp; Spawn Integration</h2>
-        <p class="release-subtitle">
-            Account, character and spawn flow begin connecting.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Character activation foundation.</li>
-                <li>Character spawn foundation.</li>
-                <li>Registration spawn integration.</li>
-                <li>Local persistence architecture through scriptfiles.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Architecture</div>
-
-            <div class="architecture">
-
-                <div>SA-MP Connection</div>
-                <div>        ↓</div>
-                <div>Account</div>
-                <div>        ↓</div>
-                <div>Login / Register</div>
-                <div>        ↓</div>
-                <div>Character Selection</div>
-                <div>        ↓</div>
-                <div>Character Activation / Creation</div>
-                <div>        ↓</div>
-                <div class="gold">Spawn</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v0.9
-========================================================= -->
-
-<article class="release" data-version="v0.9" data-title="Player Lifecycle Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 0.9</span>
-        <h2>Player Lifecycle Foundation</h2>
-        <p class="release-subtitle">
-            CRP Core begins its deeper runtime architecture.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Player State Foundation.</li>
-                <li>Player Session Foundation.</li>
-                <li>Player Runtime State.</li>
-                <li>Player validation helpers.</li>
-                <li>Lifecycle validation.</li>
-                <li>State transition foundation.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Player State Flow</div>
-
-            <div class="architecture">
-
-                <div>NONE</div>
-                <div> ↓</div>
-                <div>CONNECTED</div>
-                <div> ↓</div>
-                <div>AUTHENTICATING</div>
-                <div> ↓</div>
-                <div>AUTHENTICATED</div>
-                <div> ↓</div>
-                <div>CHARACTER</div>
-                <div> ↓</div>
-                <div class="gold">ACTIVE</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.0
-========================================================= -->
-
-<article class="release" data-version="v1.0" data-title="Centralized Player Lifecycle">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.0</span>
-        <h2>Centralized Player Lifecycle</h2>
-        <p class="release-subtitle">
-            Lifecycle logic moves into dedicated handlers.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <div class="code-wrap">
-
-                <div class="code-top">
-                    <div>Pawn</div>
-
-                    <div class="code-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <div class="status reveal">
+                        <span class="status-dot"></span>
+                        Project In Development
                     </div>
+
+                    <h1 class="reveal delay-1">
+                        Building a different
+                        <span>roleplay experience.</span>
+                    </h1>
+
+                    <p class="hero-description reveal delay-2">
+                        Crystal Roleplay adalah custom San Andreas Multiplayer
+                        roleplay project yang dibangun secara bertahap dengan
+                        fokus pada foundation, struktur sistem, consistency,
+                        dan pengalaman bermain yang memiliki identitas sendiri.
+                    </p>
+
+                    <div class="hero-actions reveal delay-3">
+                        <a href="#logs" class="button button-primary">
+                            View Development Logs
+                        </a>
+
+                        <a href="#faq" class="button button-secondary">
+                            Q&A
+                        </a>
+                    </div>
+
+                    <div class="hero-meta reveal delay-3">
+
+                        <div class="meta-item">
+                            <span class="meta-label">Project</span>
+                            <span class="meta-value">Crystal Roleplay</span>
+                        </div>
+
+                        <div class="meta-item">
+                            <span class="meta-label">Platform</span>
+                            <span class="meta-value">SA-MP</span>
+                        </div>
+
+                        <div class="meta-item">
+                            <span class="meta-label">Status</span>
+                            <span class="meta-value">In Development</span>
+                        </div>
+
+                        <div class="meta-item">
+                            <span class="meta-label">Developer</span>
+                            <span class="meta-value">Muhammad Rizal</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =====================================================
+             ABOUT
+        ====================================================== -->
+
+        <section class="section about" id="about">
+            <div class="container">
+
+                <div class="about-grid">
+
+                    <div class="reveal">
+                        <span class="eyebrow">About The Project</span>
+
+                        <h2>
+                            Dibangun dari
+                            foundation terlebih dahulu.
+                        </h2>
+
+                        <p class="section-description">
+                            Crystal Roleplay tidak dibangun dengan mengejar
+                            jumlah fitur secepat mungkin. Sistem dasar
+                            dipersiapkan terlebih dahulu agar fitur yang
+                            datang setelahnya memiliki struktur yang jelas.
+                        </p>
+                    </div>
+
+                    <div class="about-card reveal delay-1">
+
+                        <h3>Development Principles</h3>
+
+                        <p>
+                            Setiap tahap development diarahkan agar sistem
+                            tetap modular, dapat divalidasi, dan mudah
+                            dikembangkan kembali di masa depan.
+                        </p>
+
+                        <div class="principles">
+
+                            <div class="principle">
+                                <div class="principle-icon">01</div>
+                                <div>
+                                    <strong>Foundation First</strong>
+                                    <span>Dasar sistem dibangun sebelum gameplay.</span>
+                                </div>
+                            </div>
+
+                            <div class="principle">
+                                <div class="principle-icon">02</div>
+                                <div>
+                                    <strong>Modular Development</strong>
+                                    <span>Sistem dikembangkan secara terstruktur.</span>
+                                </div>
+                            </div>
+
+                            <div class="principle">
+                                <div class="principle-icon">03</div>
+                                <div>
+                                    <strong>Validation</strong>
+                                    <span>State, session dan lifecycle diperiksa.</span>
+                                </div>
+                            </div>
+
+                            <div class="principle">
+                                <div class="principle-icon">04</div>
+                                <div>
+                                    <strong>Own Identity</strong>
+                                    <span>Crystal Roleplay memiliki arah dan karakter sendiri.</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-<pre><span class="kw">stock</span> <span class="fn">CRP_HandlePlayerConnect</span>(playerid);
-<span class="kw">stock</span> <span class="fn">CRP_HandlePlayerSpawn</span>(playerid);
-<span class="kw">stock</span> <span class="fn">CRP_HandlePlayerDeath</span>(playerid, killerid, reason);
-<span class="kw">stock</span> <span class="fn">CRP_HandlePlayerDisconnect</span>(playerid, reason);</pre>
-
             </div>
-
         </section>
 
-        <section class="section">
 
-            <div class="section-title">Improved</div>
+        <!-- =====================================================
+             STATS
+        ====================================================== -->
 
-            <ul class="change-list improved">
+        <section class="section stats">
+            <div class="container">
 
-                <li>SA-MP callbacks become lightweight.</li>
-                <li>Lifecycle logic becomes centralized.</li>
-                <li>Future core expansion becomes easier.</li>
+                <div class="stats-grid reveal">
 
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.1
-========================================================= -->
-
-<article class="release" data-version="v1.1" data-title="Player Session ID">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.1</span>
-        <h2>Player Session ID</h2>
-        <p class="release-subtitle">
-            Each connection receives a unique runtime session identity.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Global session counter.</li>
-                <li>Player session ID.</li>
-                <li>Session start and end.</li>
-                <li>Session active validation.</li>
-                <li>Session debug foundation.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.2
-========================================================= -->
-
-<article class="release" data-version="v1.2" data-title="Player Identity Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.2</span>
-        <h2>Player Identity Foundation</h2>
-        <p class="release-subtitle">
-            Runtime identity becomes cached and validated.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Player username cache.</li>
-                <li>Identity ready state.</li>
-                <li>Cached player name.</li>
-                <li>Identity validation.</li>
-                <li>Identity reset.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.3
-========================================================= -->
-
-<article class="release" data-version="v1.3" data-title="Player State Integrity">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.3</span>
-        <h2>Player State Integrity</h2>
-        <p class="release-subtitle">
-            State changes receive additional validation.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>State integrity validation.</li>
-                <li>State entry validation.</li>
-                <li>State transition protection.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.4
-========================================================= -->
-
-<article class="release" data-version="v1.4" data-title="Player Runtime Integrity">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.4</span>
-        <h2>Player Runtime Integrity</h2>
-        <p class="release-subtitle">
-            Runtime flags become explicitly validated.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Runtime integrity validation.</li>
-                <li>Safe spawned state setter.</li>
-                <li>Safe dead state setter.</li>
-                <li>Runtime consistency validation.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Runtime Rule</div>
-
-            <div class="architecture">
-
-                <div class="gold">Spawned = TRUE</div>
-                <div>+</div>
-                <div class="gold">Dead = TRUE</div>
-                <div>↓</div>
-                <div class="blue">Invalid Runtime Combination</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.5
-========================================================= -->
-
-<article class="release" data-version="v1.5" data-title="Session Lifecycle Hardening">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.5</span>
-        <h2>Session &amp; Lifecycle Hardening</h2>
-        <p class="release-subtitle">
-            Runtime lifecycle becomes more strongly bound to sessions.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Session integrity validation.</li>
-                <li>Session integrity debugging.</li>
-                <li>Lifecycle validation.</li>
-                <li>Lifecycle session validation.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.6
-========================================================= -->
-
-<article class="release" data-version="v1.6" data-title="Player Data Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.6</span>
-        <h2>Player Data Foundation</h2>
-        <p class="release-subtitle">
-            A runtime-only player data layer is introduced.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Player data ready state.</li>
-                <li>Player data session binding.</li>
-                <li>Data initialization.</li>
-                <li>Data reset.</li>
-                <li>Data validation.</li>
-                <li>Data integrity validation.</li>
-                <li>Data debug foundation.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Scope</div>
-
-            <p>
-                This layer represents runtime player data only.
-                It does not replace the account or character systems.
-            </p>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.7
-========================================================= -->
-
-<article class="release" data-version="v1.7" data-title="Player Spawn Context">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.7</span>
-        <h2>Player Spawn Context</h2>
-        <p class="release-subtitle">
-            Spawn operations receive explicit runtime context.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Spawn Types</div>
-
-            <div class="code-wrap">
-
-                <div class="code-top">
-                    <div>Pawn</div>
-
-                    <div class="code-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <div class="stat">
+                        <div class="stat-number">v2.9</div>
+                        <div class="stat-label">Latest Completed Foundation</div>
                     </div>
+
+                    <div class="stat">
+                        <div class="stat-number">v3.0</div>
+                        <div class="stat-label">Next Development Milestone</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-number">50</div>
+                        <div class="stat-label">Development Server Slots</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="stat-number">2026</div>
+                        <div class="stat-label">Project Development Year</div>
+                    </div>
+
                 </div>
 
-<pre><span class="kw">#define</span> CRP_SPAWN_TYPE_NONE       <span class="num">0</span>
-<span class="kw">#define</span> CRP_SPAWN_TYPE_DEFAULT    <span class="num">1</span>
-<span class="kw">#define</span> CRP_SPAWN_TYPE_CHARACTER  <span class="num">2</span>
-<span class="kw">#define</span> CRP_SPAWN_TYPE_REGISTER    <span class="num">3</span>
-<span class="kw">#define</span> CRP_SPAWN_TYPE_LOGOUT      <span class="num">4</span>
-<span class="kw">#define</span> CRP_SPAWN_TYPE_JAIL        <span class="num">5</span>
-<span class="kw">#define</span> CRP_SPAWN_TYPE_HOSPITAL    <span class="num">6</span>
-<span class="kw">#define</span> CRP_SPAWN_TYPE_JOB         <span class="num">7</span>
-<span class="kw">#define</span> CRP_SPAWN_TYPE_EVENT       <span class="num">8</span></pre>
-
             </div>
-
         </section>
 
-        <section class="section">
 
-            <div class="section-title">Added</div>
+        <!-- =====================================================
+             CHANGELOG
+        ====================================================== -->
 
-            <ul class="change-list">
+        <section class="section changelog" id="logs">
+            <div class="container">
 
-                <li>Spawn type validation.</li>
-                <li>Spawn type setter and getter.</li>
-                <li>Spawn type reset.</li>
-                <li>Spawn type integrity validation.</li>
-                <li>Spawn debug foundation.</li>
+                <div class="section-header reveal">
+                    <span class="eyebrow">Development History</span>
 
-            </ul>
+                    <h2>Development Logs</h2>
 
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v1.8
-========================================================= -->
-
-<article class="release" data-version="v1.8" data-title="Lifecycle Core Separation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 1.8</span>
-        <h2>Lifecycle Core Separation</h2>
-        <p class="release-subtitle">
-            Circular validation dependencies are removed.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <div class="code-wrap">
-
-                <div class="code-top">
-                    <div>Pawn</div>
-
-                    <div class="code-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+                    <p class="section-description">
+                        Catatan perkembangan Crystal Roleplay dari tahap
+                        awal hingga foundation terbaru.
+                    </p>
                 </div>
 
-<pre><span class="kw">stock</span> <span class="type">bool:</span><span class="fn">CRP_IsPlayerLifecycleCoreValid</span>(playerid)
-{
-    <span class="comment">// Core lifecycle validation</span>
-    <span class="comment">// without dependent context systems.</span>
 
-    <span class="kw">return</span> <span class="str">true</span>;
-}</pre>
-
-            </div>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Purpose</div>
-
-            <p>
-                Lifecycle Core can now be validated independently,
-                allowing Spawn Context and full Lifecycle Validation
-                to remain separated without circular dependency.
-            </p>
-
-        </section>
-
-    </div>
-
-</article>
+                <div class="timeline">
 
 
-<!-- =========================================================
-     v1.9
-========================================================= -->
+                    <!-- v0.1 -->
 
-<article class="release" data-version="v1.9" data-title="Player State History">
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
 
-    <div class="timeline-dot"></div>
+                        <div class="log-top">
+                            <span class="version">v0.1</span>
+                            <span class="log-date">Early Development</span>
+                        </div>
 
-    <div class="release-head">
-        <span class="version">Version 1.9</span>
-        <h2>Player State History</h2>
-        <p class="release-subtitle">
-            CRP begins tracking previous player states.
-        </p>
-    </div>
+                        <h3>Project Foundation Begins</h3>
 
-    <div class="release-card">
+                        <p>
+                            Tahap awal pengembangan Crystal Roleplay.
+                            Fokus utama berada pada pembentukan project
+                            dan dasar gamemode.
+                        </p>
 
-        <section class="section">
+                        <div class="log-tags">
+                            <span class="tag">Foundation</span>
+                            <span class="tag">Initial Core</span>
+                            <span class="tag">SA-MP</span>
+                        </div>
 
-            <div class="section-title">Added</div>
+                        <div class="code-box">
+                            <div class="code-head">
+                                <span>crystal-roleplay</span>
+                                <div class="code-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
 
-            <ul class="change-list">
+<pre><span class="comment">// Crystal Roleplay</span>
+<span class="comment">// Initial Development Foundation</span>
 
-                <li>Previous player state.</li>
-                <li>State history session binding.</li>
-                <li>State history integrity.</li>
-                <li>State history reset.</li>
-                <li>State history debug foundation.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
+<span class="kw">project</span> = <span class="str">"Crystal Roleplay"</span>
+<span class="kw">platform</span> = <span class="str">"SA-MP"</span>
+<span class="kw">status</span> = <span class="str">"development"</span></pre>
+                        </div>
+                    </article>
 
 
-<!-- =========================================================
-     v2.0
-========================================================= -->
+                    <!-- v0.2 -->
 
-<article class="release" data-version="v2.0" data-title="State History Transition Hardening">
+                    <article class="log-card reveal delay-1">
+                        <div class="log-marker"></div>
 
-    <div class="timeline-dot"></div>
+                        <div class="log-top">
+                            <span class="version">v0.2</span>
+                            <span class="log-date">Core Development</span>
+                        </div>
 
-    <div class="release-head">
-        <span class="version">Version 2.0</span>
-        <h2>State History Transition Hardening</h2>
-        <p class="release-subtitle">
-            State history becomes part of the transition validation chain.
-        </p>
-    </div>
+                        <h3>Core System Foundation</h3>
 
-    <div class="release-card">
+                        <p>
+                            Pengembangan awal core system dan player runtime
+                            foundation mulai dibentuk sebagai dasar server.
+                        </p>
 
-        <section class="section">
+                        <div class="log-tags">
+                            <span class="tag">Core</span>
+                            <span class="tag">Player State</span>
+                            <span class="tag">Runtime</span>
+                        </div>
 
-            <div class="section-title">Added</div>
+<pre><span class="comment">// Core system foundation</span>
+<span class="kw">Player</span> → <span class="fn">Core</span> → <span class="fn">Runtime</span>
 
-            <div class="code-wrap">
+<span class="kw">state</span> = <span class="str">foundation</span></pre>
+                    </article>
 
-                <div class="code-top">
-                    <div>Pawn</div>
 
-                    <div class="code-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
+                    <!-- v0.3 -->
 
-<pre><span class="kw">stock</span> <span class="type">bool:</span>
-<span class="fn">CRP_CanUpdatePlayerStateHistory</span>(
+                    <article class="log-card reveal delay-2">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v0.3</span>
+                            <span class="log-date">Early Foundation</span>
+                        </div>
+
+                        <h3>Core Refinement</h3>
+
+                        <p>
+                            Tahap refinement awal sebelum Crystal Roleplay
+                            memasuki foundation architecture yang lebih
+                            terstruktur.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Core Refinement</span>
+                            <span class="tag">Development</span>
+                        </div>
+
+<pre><span class="comment">// Foundation refinement</span>
+<span class="kw">CRP</span> → <span class="str">Core</span> → <span class="str">System Foundation</span></pre>
+                    </article>
+
+
+                    <!-- v0.9 -->
+
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v0.9</span>
+                            <span class="log-date">Core Foundation</span>
+                        </div>
+
+                        <h3>Player Lifecycle Foundation</h3>
+
+                        <p>
+                            Player lifecycle mulai mendapatkan struktur yang
+                            jelas dengan state, session, identity, runtime
+                            dan system readiness.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Player State</span>
+                            <span class="tag">Session</span>
+                            <span class="tag">Identity</span>
+                            <span class="tag">Runtime</span>
+                        </div>
+
+<pre><span class="kw">NONE</span>
+  ↓
+<span class="kw">CONNECTED</span>
+  ↓
+<span class="kw">AUTHENTICATING</span>
+  ↓
+<span class="kw">AUTHENTICATED</span>
+  ↓
+<span class="kw">CHARACTER</span>
+  ↓
+<span class="kw">ACTIVE</span></pre>
+                    </article>
+
+
+                    <!-- v1.0 -->
+
+                    <article class="log-card reveal delay-1">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.0</span>
+                            <span class="log-date">Lifecycle Architecture</span>
+                        </div>
+
+                        <h3>Centralized Player Lifecycle</h3>
+
+                        <p>
+                            Event lifecycle dipusatkan melalui handler khusus
+                            sehingga callback utama tetap tipis dan terstruktur.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Connect</span>
+                            <span class="tag">Spawn</span>
+                            <span class="tag">Death</span>
+                            <span class="tag">Disconnect</span>
+                        </div>
+
+<pre><span class="fn">CRP_HandlePlayerConnect</span>(playerid);
+<span class="fn">CRP_HandlePlayerSpawn</span>(playerid);
+<span class="fn">CRP_HandlePlayerDeath</span>(playerid, killerid, reason);
+<span class="fn">CRP_HandlePlayerDisconnect</span>(playerid, reason);</pre>
+                    </article>
+
+
+                    <!-- v1.1 -->
+
+                    <article class="log-card reveal delay-2">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.1</span>
+                            <span class="log-date">Session Foundation</span>
+                        </div>
+
+                        <h3>Player Session ID</h3>
+
+                        <p>
+                            Setiap player session memiliki ID untuk membedakan
+                            lifecycle antar koneksi.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Session ID</span>
+                            <span class="tag">Session Binding</span>
+                        </div>
+
+<pre><span class="kw">gPlayerSessionID</span>[playerid]
+<span class="kw">gCRPSessionCounter</span>
+
+<span class="fn">CRP_StartPlayerSession</span>()
+<span class="fn">CRP_EndPlayerSession</span>()</pre>
+                    </article>
+
+
+                    <!-- v1.2 -->
+
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.2</span>
+                            <span class="log-date">Identity Foundation</span>
+                        </div>
+
+                        <h3>Player Username Cache</h3>
+
+                        <p>
+                            Identity player mulai memiliki cache runtime
+                            untuk menjaga konsistensi nama dan validasi identity.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Identity</span>
+                            <span class="tag">Username Cache</span>
+                        </div>
+
+<pre><span class="kw">gPlayerName</span>[playerid]
+<span class="kw">gPlayerIdentityReady</span>[playerid]
+
+<span class="fn">CRP_InitPlayerIdentity</span>()
+<span class="fn">CRP_ResetPlayerIdentity</span>()</pre>
+                    </article>
+
+
+                    <!-- v1.3 -->
+
+                    <article class="log-card reveal delay-1">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.3</span>
+                            <span class="log-date">State Integrity</span>
+                        </div>
+
+                        <h3>Player State Integrity</h3>
+
+                        <p>
+                            Validasi state diperkuat untuk memastikan player
+                            hanya dapat berpindah ke state yang valid.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">State Validation</span>
+                            <span class="tag">Transition</span>
+                        </div>
+
+<pre><span class="fn">CRP_IsPlayerStateIntegrityValid</span>()
+<span class="fn">CRP_CanEnterPlayerState</span>()</pre>
+                    </article>
+
+
+                    <!-- v1.4 -->
+
+                    <article class="log-card reveal delay-2">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.4</span>
+                            <span class="log-date">Runtime Integrity</span>
+                        </div>
+
+                        <h3>Player Runtime Integrity</h3>
+
+                        <p>
+                            Spawned dan dead state mendapatkan validasi runtime
+                            untuk mencegah kombinasi state yang tidak valid.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Runtime</span>
+                            <span class="tag">Spawn</span>
+                            <span class="tag">Death</span>
+                        </div>
+
+<pre><span class="fn">CRP_SetPlayerSpawnedSafe</span>()
+<span class="fn">CRP_SetPlayerDeadSafe</span>()
+
+<span class="comment">// spawned = true + dead = true → invalid</span></pre>
+                    </article>
+
+
+                    <!-- v1.5 -->
+
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.5</span>
+                            <span class="log-date">Lifecycle Hardening</span>
+                        </div>
+
+                        <h3>Session & Lifecycle Validation</h3>
+
+                        <p>
+                            Lifecycle diperkuat dengan validasi session dan
+                            integrity sebelum sistem melanjutkan proses.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Lifecycle</span>
+                            <span class="tag">Session Integrity</span>
+                        </div>
+
+<pre><span class="fn">CRP_IsPlayerSessionIntegrityValid</span>()
+<span class="fn">CRP_IsPlayerLifecycleValid</span>()
+<span class="fn">CRP_IsPlayerLifecycleSessionValid</span>()</pre>
+                    </article>
+
+
+                    <!-- v1.6 -->
+
+                    <article class="log-card reveal delay-1">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.6</span>
+                            <span class="log-date">Data Foundation</span>
+                        </div>
+
+                        <h3>Player Data Foundation</h3>
+
+                        <p>
+                            Player Data diperkenalkan sebagai runtime foundation.
+                            Data ini belum menjadi sistem account atau database.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Player Data</span>
+                            <span class="tag">Runtime</span>
+                            <span class="tag">Integrity</span>
+                        </div>
+
+<pre><span class="kw">gPlayerDataReady</span>[playerid]
+<span class="kw">gPlayerDataSessionID</span>[playerid]
+
+<span class="fn">CRP_InitPlayerData</span>()
+<span class="fn">CRP_ResetPlayerData</span>()</pre>
+                    </article>
+
+
+                    <!-- v1.7 -->
+
+                    <article class="log-card reveal delay-2">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.7</span>
+                            <span class="log-date">Spawn Context</span>
+                        </div>
+
+                        <h3>Player Spawn Context</h3>
+
+                        <p>
+                            Spawn tidak lagi dianggap hanya sebagai koordinat.
+                            Sistem mulai mengenali konteks asal spawn.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Spawn Context</span>
+                            <span class="tag">Register</span>
+                            <span class="tag">Logout</span>
+                            <span class="tag">Jail</span>
+                            <span class="tag">Hospital</span>
+                        </div>
+
+<pre><span class="kw">SPAWN_TYPE_DEFAULT</span>
+<span class="kw">SPAWN_TYPE_CHARACTER</span>
+<span class="kw">SPAWN_TYPE_REGISTER</span>
+<span class="kw">SPAWN_TYPE_LOGOUT</span>
+<span class="kw">SPAWN_TYPE_JAIL</span>
+<span class="kw">SPAWN_TYPE_HOSPITAL</span>
+<span class="kw">SPAWN_TYPE_JOB</span>
+<span class="kw">SPAWN_TYPE_EVENT</span></pre>
+                    </article>
+
+
+                    <!-- v1.8 -->
+
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.8</span>
+                            <span class="log-date">Architecture Fix</span>
+                        </div>
+
+                        <h3>Lifecycle Dependency Refinement</h3>
+
+                        <p>
+                            Circular dependency pada spawn context dan lifecycle
+                            diperbaiki melalui pemisahan validasi lifecycle core.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Dependency</span>
+                            <span class="tag">Integrity</span>
+                            <span class="tag">Architecture</span>
+                        </div>
+
+<pre><span class="kw">CRP_IsPlayerLifecycleCoreValid</span>(playerid)
+
+<span class="comment">// Spawn Context tidak memanggil full lifecycle</span></pre>
+                    </article>
+
+
+                    <!-- v1.9 -->
+
+                    <article class="log-card reveal delay-1">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v1.9</span>
+                            <span class="log-date">State History</span>
+                        </div>
+
+                        <h3>Player State History</h3>
+
+                        <p>
+                            Sistem mulai mencatat state sebelumnya dan session
+                            yang terkait dengan state history tersebut.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">State History</span>
+                            <span class="tag">Previous State</span>
+                            <span class="tag">Session</span>
+                        </div>
+
+<pre><span class="kw">gPlayerPreviousState</span>[playerid]
+<span class="kw">gPlayerStateSessionID</span>[playerid]
+
+<span class="fn">CRP_GetPlayerPreviousState</span>()</pre>
+                    </article>
+
+
+                    <!-- v2.0 -->
+
+                    <article class="log-card reveal delay-2">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.0</span>
+                            <span class="log-date">Transition Hardening</span>
+                        </div>
+
+                        <h3>State History Transition Validation</h3>
+
+                        <p>
+                            Perubahan state mendapatkan validasi history sebelum
+                            transition disimpan sebagai state baru.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Transition</span>
+                            <span class="tag">History</span>
+                            <span class="tag">Audit</span>
+                        </div>
+
+<pre><span class="fn">CRP_CanUpdatePlayerStateHistory</span>(
     playerid,
     newState
 )</pre>
+                    </article>
+
+
+                    <!-- v2.1 -->
+
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.1</span>
+                            <span class="log-date">Transition Audit</span>
+                        </div>
+
+                        <h3>State Transition Audit</h3>
+
+                        <p>
+                            Transition count dan session binding ditambahkan
+                            sebagai audit terhadap state transition player.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Audit</span>
+                            <span class="tag">Transition Count</span>
+                            <span class="tag">Session Binding</span>
+                        </div>
+
+<pre><span class="kw">gPlayerStateTransitionCount</span>[playerid]
+<span class="kw">gPlayerStateTransitionSessionID</span>[playerid]</pre>
+                    </article>
+
+
+                    <!-- v2.2 -->
+
+                    <article class="log-card reveal delay-1">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.2</span>
+                            <span class="log-date">Access Foundation</span>
+                        </div>
+
+                        <h3>Player State Access Gate</h3>
+
+                        <p>
+                            Sistem access gate mulai memastikan player hanya
+                            dapat menggunakan sistem pada state yang sesuai.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Access Gate</span>
+                            <span class="tag">State Access</span>
+                        </div>
+
+<pre><span class="fn">CRP_IsPlayerStateAllowed</span>()
+<span class="fn">CRP_IsPlayerStateAllowedForSession</span>()</pre>
+                    </article>
+
+
+                    <!-- v2.3 -->
+
+                    <article class="log-card reveal delay-2">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.3</span>
+                            <span class="log-date">Access Level</span>
+                        </div>
+
+                        <h3>Minimum State Access</h3>
+
+                        <p>
+                            Access system diperluas dengan minimum access level
+                            berdasarkan urutan state player.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Minimum Access</span>
+                            <span class="tag">Access Level</span>
+                        </div>
+
+<pre><span class="fn">CRP_IsPlayerStateAtLeast</span>()
+<span class="fn">CRP_IsPlayerStateAtLeastForSession</span>()</pre>
+                    </article>
+
+
+                    <!-- v2.4 -->
+
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.4</span>
+                            <span class="log-date">Access Policy</span>
+                        </div>
+
+                        <h3>Player State Access Policy</h3>
+
+                        <p>
+                            Requirement access mulai memiliki validation layer
+                            tersendiri sebelum digunakan oleh access system.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Policy</span>
+                            <span class="tag">Requirement</span>
+                            <span class="tag">Validation</span>
+                        </div>
+
+<pre><span class="fn">CRP_IsValidStateAccessRequirement</span>()
+<span class="fn">CRP_IsPlayerStateAccessPolicyValid</span>()</pre>
+                    </article>
+
+
+                    <!-- v2.5 -->
+
+                    <article class="log-card reveal delay-1">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.5</span>
+                            <span class="log-date">Decision Foundation</span>
+                        </div>
+
+                        <h3>Access Decision Foundation</h3>
+
+                        <p>
+                            Access gate mulai dipisahkan dari decision layer
+                            agar hasil akses dapat ditentukan secara terstruktur.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Decision</span>
+                            <span class="tag">Exact Access</span>
+                            <span class="tag">Minimum Access</span>
+                        </div>
+
+<pre><span class="kw">CRP_ACCESS_RESULT_DENIED</span>  = <span class="num">0</span>
+<span class="kw">CRP_ACCESS_RESULT_ALLOWED</span> = <span class="num">1</span>
+
+<span class="fn">CRP_DecidePlayerStateExactAccess</span>()
+<span class="fn">CRP_DecidePlayerStateMinimumAccess</span>()</pre>
+                    </article>
+
+
+                    <!-- v2.6 -->
+
+                    <article class="log-card reveal delay-2">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.6</span>
+                            <span class="log-date">Decision Reason</span>
+                        </div>
+
+                        <h3>Access Decision Reason Foundation</h3>
+
+                        <p>
+                            Decision tidak lagi hanya menghasilkan true atau
+                            false. Sistem mulai mengenali alasan dari setiap
+                            access decision.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Reason</span>
+                            <span class="tag">Decision</span>
+                            <span class="tag">Validation</span>
+                        </div>
+
+<pre><span class="kw">INVALID_PLAYER</span>
+<span class="kw">INVALID_REQUIREMENT</span>
+<span class="kw">INVALID_ACCESS_STATE</span>
+<span class="kw">LIFECYCLE_INVALID</span>
+<span class="kw">SESSION_INVALID</span>
+<span class="kw">STATE_MISMATCH</span>
+<span class="kw">STATE_TOO_LOW</span>
+<span class="kw">STATE_ALLOWED</span></pre>
+                    </article>
+
+
+                    <!-- v2.7 -->
+
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.7</span>
+                            <span class="log-date">Decision Consistency</span>
+                        </div>
+
+                        <h3>Access Decision Consistency</h3>
+
+                        <p>
+                            Result dan reason mendapatkan validation agar
+                            keputusan access selalu konsisten satu sama lain.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Consistency</span>
+                            <span class="tag">Result Validation</span>
+                            <span class="tag">Reason Validation</span>
+                        </div>
+
+<pre><span class="fn">CRP_IsValidPlayerStateAccessResult</span>()
+<span class="fn">CRP_GetPlayerStateAccessResultFromReason</span>()
+<span class="fn">CRP_IsPlayerStateAccessDecisionConsistent</span>()</pre>
+                    </article>
+
+
+                    <!-- v2.8 -->
+
+                    <article class="log-card reveal delay-1">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v2.8</span>
+                            <span class="log-date">Player Context</span>
+                        </div>
+
+                        <h3>Player Context Foundation</h3>
+
+                        <p>
+                            Player Context diperkenalkan untuk mengikat runtime
+                            player dengan session dan current state secara
+                            terstruktur.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Context</span>
+                            <span class="tag">Session Binding</span>
+                            <span class="tag">State Binding</span>
+                            <span class="tag">Integrity</span>
+                        </div>
+
+<pre><span class="kw">gPlayerContextReady</span>[playerid]
+<span class="kw">gPlayerContextSessionID</span>[playerid]
+<span class="kw">gPlayerContextState</span>[playerid]
+
+<span class="fn">CRP_InitPlayerContext</span>()
+<span class="fn">CRP_UpdatePlayerContextState</span>()</pre>
+                    </article>
+
+
+                    <!-- v2.9 -->
+
+                    <article class="log-card reveal delay-2">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version current">v2.9 — CURRENT</span>
+                            <span class="log-date">Latest Completed Version</span>
+                        </div>
+
+                        <h3>Player Lifecycle Event Foundation</h3>
+
+                        <p>
+                            Lifecycle event system menjadi lapisan terbaru
+                            foundation Crystal Roleplay. Connect, spawn, death
+                            dan disconnect kini memiliki validation, session
+                            binding, integrity dan sequence rules.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Lifecycle Event</span>
+                            <span class="tag">Sequence</span>
+                            <span class="tag">Session</span>
+                            <span class="tag">Integrity</span>
+                            <span class="tag">Debug</span>
+                        </div>
+
+<pre><span class="kw">NONE</span>
+<span class="kw">CONNECT</span>
+<span class="kw">SPAWN</span>
+<span class="kw">DEATH</span>
+<span class="kw">DISCONNECT</span>
+
+<span class="fn">CRP_CanHandlePlayerEvent</span>()
+<span class="fn">CRP_RecordPlayerEvent</span>()
+<span class="fn">CRP_IsPlayerLifecycleEventIntegrityValid</span>()</pre>
+
+                        <div class="code-box">
+                            <div class="code-head">
+                                <span>event sequence</span>
+                                <div class="code-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+
+<pre><span class="kw">CONNECT</span>
+   ↓
+<span class="kw">SPAWN</span>
+   ↓
+<span class="kw">DEATH</span>
+   ↓
+<span class="kw">SPAWN</span>
+   ↓
+<span class="kw">DISCONNECT</span></pre>
+                        </div>
+                    </article>
+
+
+                    <!-- v3.0 -->
+
+                    <article class="log-card reveal">
+                        <div class="log-marker"></div>
+
+                        <div class="log-top">
+                            <span class="version">v3.0</span>
+                            <span class="log-date">Next Milestone</span>
+                        </div>
+
+                        <h3>Foundation Expansion</h3>
+
+                        <p>
+                            v3.0 menjadi tahap lanjutan setelah lifecycle event
+                            foundation v2.9. Detail implementation akan
+                            ditetapkan dan divalidasi selama proses development.
+                        </p>
+
+                        <div class="log-tags">
+                            <span class="tag">Planned</span>
+                            <span class="tag">Foundation</span>
+                            <span class="tag">Next Milestone</span>
+                        </div>
+
+<pre><span class="comment">// Crystal Roleplay v3.0</span>
+<span class="comment">// Next development milestone</span>
+
+<span class="kw">status</span> = <span class="str">"planned / development"</span>
+<span class="kw">previous</span> = <span class="str">"v2.9"</span>
+<span class="kw">focus</span> = <span class="str">"foundation expansion"</span></pre>
+                    </article>
+
+                </div>
 
             </div>
-
         </section>
 
-        <section class="section">
 
-            <div class="section-title">Transition Pipeline</div>
-
-            <div class="architecture">
-
-                <div>Player Validation</div>
-                <div>↓</div>
-                <div>State Transition Validation</div>
-                <div>↓</div>
-                <div>State Entry Validation</div>
-                <div>↓</div>
-                <div>State History Validation</div>
-                <div>↓</div>
-                <div>Audit Validation</div>
-                <div>↓</div>
-                <div class="gold">State Update</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.1
-========================================================= -->
-
-<article class="release" data-version="v2.1" data-title="State Transition Audit">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.1</span>
-        <h2>State Transition Audit</h2>
-        <p class="release-subtitle">
-            State transitions become auditable runtime operations.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>State transition count.</li>
-                <li>Transition session binding.</li>
-                <li>Transition audit integrity.</li>
-                <li>Transition audit reset.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Rules</div>
-
-            <div class="architecture">
-
-                <div>NONE → Count 0 / Session 0</div>
-                <div>CONNECTED → Count 1 / Current Session</div>
-                <div>Later States → Count &gt; 1 / Current Session</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.2
-========================================================= -->
-
-<article class="release" data-version="v2.2" data-title="Player State Access Gate">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.2</span>
-        <h2>Player State Access Gate</h2>
-        <p class="release-subtitle">
-            Runtime systems can now request state-protected access.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Exact state access.</li>
-                <li>Session-protected state access.</li>
-                <li>State access debugging.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Architecture</div>
-
-            <div class="architecture">
-
-                <div>Required State</div>
-                <div>↓</div>
-                <div>Player State</div>
-                <div>↓</div>
-                <div class="gold">Access Gate</div>
-                <div>↓</div>
-                <div>ALLOWED / DENIED</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.3
-========================================================= -->
-
-<article class="release" data-version="v2.3" data-title="Player State Access Level">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.3</span>
-        <h2>Player State Access Level</h2>
-        <p class="release-subtitle">
-            Minimum state requirements become supported.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Minimum state access.</li>
-                <li>Session-protected minimum access.</li>
-                <li>Access level integrity.</li>
-                <li>Minimum access debugging.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Concept</div>
-
-            <div class="architecture">
-
-                <div>CONNECTED</div>
-                <div>↓</div>
-                <div>AUTHENTICATING</div>
-                <div>↓</div>
-                <div>AUTHENTICATED</div>
-                <div>↓</div>
-                <div>CHARACTER</div>
-                <div>↓</div>
-                <div class="gold">ACTIVE</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.4
-========================================================= -->
-
-<article class="release" data-version="v2.4" data-title="Player State Access Policy">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.4</span>
-        <h2>Player State Access Policy</h2>
-        <p class="release-subtitle">
-            Access requirements receive explicit policy validation.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Access requirement validation.</li>
-                <li>Access policy validation.</li>
-                <li>Requirement-aware access integrity.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.5
-========================================================= -->
-
-<article class="release" data-version="v2.5" data-title="Player State Access Decision">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.5</span>
-        <h2>Access Decision Foundation</h2>
-        <p class="release-subtitle">
-            Access gates become decision-driven.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Result Model</div>
-
-            <div class="code-wrap">
-
-                <div class="code-top">
-                    <div>Pawn</div>
-
-                    <div class="code-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+        <!-- =====================================================
+             ARCHITECTURE
+        ====================================================== -->
+
+        <section class="section architecture" id="architecture">
+            <div class="container">
+
+                <div class="section-header reveal">
+                    <span class="eyebrow">System Direction</span>
+
+                    <h2>Foundation Architecture</h2>
+
+                    <p class="section-description">
+                        Crystal Roleplay dibangun dengan pembagian tanggung
+                        jawab yang jelas agar sistem dapat berkembang tanpa
+                        kehilangan struktur dasarnya.
+                    </p>
+                </div>
+
+                <div class="architecture-grid">
+
+                    <div class="architecture-card reveal">
+                        <span class="architecture-number">01</span>
+                        <h3>Gamemode</h3>
+                        <p>
+                            Menjadi otak utama server dan menangani foundation
+                            serta lifecycle penting.
+                        </p>
+                        <code>gamemodes/crp.pwn</code>
                     </div>
-                </div>
 
-<pre><span class="kw">#define</span> CRP_ACCESS_RESULT_DENIED  <span class="num">0</span>
-<span class="kw">#define</span> CRP_ACCESS_RESULT_ALLOWED <span class="num">1</span></pre>
-
-            </div>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Exact access decision.</li>
-                <li>Minimum access decision.</li>
-                <li>Session access decision.</li>
-                <li>Access decision debug foundation.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.6
-========================================================= -->
-
-<article class="release" data-version="v2.6" data-title="Access Decision Reason Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.6</span>
-        <h2>Access Decision Reason</h2>
-        <p class="release-subtitle">
-            Decisions gain explicit, machine-readable reasons.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Reason Model</div>
-
-            <div class="code-wrap">
-
-                <div class="code-top">
-                    <div>Pawn</div>
-
-                    <div class="code-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <div class="architecture-card reveal delay-1">
+                        <span class="architecture-number">02</span>
+                        <h3>Filterscripts</h3>
+                        <p>
+                            Menjadi ruang untuk sistem modular yang dapat
+                            dikembangkan secara terpisah.
+                        </p>
+                        <code>filterscripts/</code>
                     </div>
-                </div>
 
-<pre><span class="kw">#define</span> CRP_ACCESS_REASON_NONE                  <span class="num">0</span>
-<span class="kw">#define</span> CRP_ACCESS_REASON_INVALID_PLAYER        <span class="num">1</span>
-<span class="kw">#define</span> CRP_ACCESS_REASON_INVALID_REQUIREMENT   <span class="num">2</span>
-<span class="kw">#define</span> CRP_ACCESS_REASON_INVALID_ACCESS_STATE  <span class="num">3</span>
-<span class="kw">#define</span> CRP_ACCESS_REASON_LIFECYCLE_INVALID    <span class="num">4</span>
-<span class="kw">#define</span> CRP_ACCESS_REASON_SESSION_INVALID      <span class="num">5</span>
-<span class="kw">#define</span> CRP_ACCESS_REASON_STATE_MISMATCH       <span class="num">6</span>
-<span class="kw">#define</span> CRP_ACCESS_REASON_STATE_TOO_LOW        <span class="num">7</span>
-<span class="kw">#define</span> CRP_ACCESS_REASON_STATE_ALLOWED        <span class="num">8</span></pre>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.7
-========================================================= -->
-
-<article class="release" data-version="v2.7" data-title="Access Decision Consistency">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.7</span>
-        <h2>Access Decision Consistency</h2>
-        <p class="release-subtitle">
-            Decision reasons and results are validated together.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Access result validation.</li>
-                <li>Reason-to-result mapping.</li>
-                <li>Decision consistency validation.</li>
-                <li>Consistency debug foundation.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Decision Flow</div>
-
-            <div class="architecture">
-
-                <div>Access Request</div>
-                <div>↓</div>
-                <div>Decision Reason</div>
-                <div>↓</div>
-                <div>Result Mapping</div>
-                <div>↓</div>
-                <div class="gold">Consistency Validation</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.8
-========================================================= -->
-
-<article class="release" data-version="v2.8" data-title="Player Context Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.8</span>
-        <h2>Player Context Foundation</h2>
-        <p class="release-subtitle">
-            Runtime context is introduced as a dedicated layer.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Context States</div>
-
-            <div class="code-wrap">
-
-                <div class="code-top">
-                    <div>Pawn</div>
-
-                    <div class="code-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <div class="architecture-card reveal delay-2">
+                        <span class="architecture-number">03</span>
+                        <h3>Shared Includes</h3>
+                        <p>
+                            Helper dan modul bersama digunakan ketika memang
+                            dibutuhkan oleh beberapa sistem.
+                        </p>
+                        <code>includes/</code>
                     </div>
-                </div>
 
-<pre><span class="kw">#define</span> CRP_PLAYER_CONTEXT_NONE            <span class="num">0</span>
-<span class="kw">#define</span> CRP_PLAYER_CONTEXT_CONNECTED       <span class="num">1</span>
-<span class="kw">#define</span> CRP_PLAYER_CONTEXT_AUTHENTICATING  <span class="num">2</span>
-<span class="kw">#define</span> CRP_PLAYER_CONTEXT_AUTHENTICATED   <span class="num">3</span>
-<span class="kw">#define</span> CRP_PLAYER_CONTEXT_CHARACTER       <span class="num">4</span>
-<span class="kw">#define</span> CRP_PLAYER_CONTEXT_ACTIVE          <span class="num">5</span></pre>
-
-            </div>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Player context readiness.</li>
-                <li>Context session binding.</li>
-                <li>Context state binding.</li>
-                <li>Context validation.</li>
-                <li>Context integrity validation.</li>
-                <li>Context reset.</li>
-                <li>Context debug foundation.</li>
-
-            </ul>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v2.9
-========================================================= -->
-
-<article class="release" data-version="v2.9" data-title="Player Lifecycle Event Foundation">
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-        <span class="version">Version 2.9</span>
-        <h2>Player Lifecycle Event</h2>
-        <p class="release-subtitle">
-            Lifecycle events become a dedicated runtime foundation.
-        </p>
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Event Model</div>
-
-            <div class="code-wrap">
-
-                <div class="code-top">
-                    <div>Pawn</div>
-
-                    <div class="code-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <div class="architecture-card reveal">
+                        <span class="architecture-number">04</span>
+                        <h3>Account Layer</h3>
+                        <p>
+                            Authentication dan account system dikembangkan
+                            sebagai sistem terpisah dari core foundation.
+                        </p>
+                        <code>account/</code>
                     </div>
-                </div>
 
-<pre><span class="kw">#define</span> CRP_PLAYER_EVENT_NONE        <span class="num">0</span>
-<span class="kw">#define</span> CRP_PLAYER_EVENT_CONNECT     <span class="num">1</span>
-<span class="kw">#define</span> CRP_PLAYER_EVENT_SPAWN       <span class="num">2</span>
-<span class="kw">#define</span> CRP_PLAYER_EVENT_DEATH       <span class="num">3</span>
-<span class="kw">#define</span> CRP_PLAYER_EVENT_DISCONNECT  <span class="num">4</span></pre>
+                    <div class="architecture-card reveal delay-1">
+                        <span class="architecture-number">05</span>
+                        <h3>Character Layer</h3>
+                        <p>
+                            Character slot, creation, activation dan spawn
+                            memiliki lifecycle tersendiri.
+                        </p>
+                        <code>character/</code>
+                    </div>
 
-            </div>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Lifecycle Event Foundation.</li>
-                <li>Lifecycle Event Validation.</li>
-                <li>Lifecycle Event Session Binding.</li>
-                <li>Lifecycle Event Integrity Validation.</li>
-                <li>Lifecycle Event Sequence Validation.</li>
-                <li>Lifecycle Event Debug Foundation.</li>
-
-            </ul>
-
-        </section>
-
-        <section class="section">
-
-            <div class="section-title">Event Sequence</div>
-
-            <div class="architecture">
-
-                <div class="gold">CONNECT</div>
-                <div>↓</div>
-                <div>SPAWN</div>
-                <div>↓</div>
-                <div>DEATH</div>
-                <div>↓</div>
-                <div>SPAWN</div>
-                <div>↓</div>
-                <div class="gold">DISCONNECT</div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</article>
-
-
-<!-- =========================================================
-     v3.0
-========================================================= -->
-
-<article
-    class="release"
-    id="v30"
-    data-version="v3.0"
-    data-title="Player Runtime Metadata Foundation"
->
-
-    <div class="timeline-dot"></div>
-
-    <div class="release-head">
-
-        <span class="version">Version 3.0</span>
-
-        <h2>Player Runtime Metadata</h2>
-
-        <p class="release-subtitle">
-            A new runtime metadata layer for the next generation
-            of CRP systems.
-        </p>
-
-    </div>
-
-    <div class="release-card">
-
-        <section class="section">
-
-            <div class="section-title">Development Focus</div>
-
-            <p>
-                v3.0 introduces a structured runtime metadata layer.
-                The system is designed to provide future CRP systems
-                with additional runtime context while remaining
-                independent from account, character, database,
-                command, and gameplay systems.
-            </p>
-
-        </section>
-
-
-        <section class="section">
-
-            <div class="section-title">Added</div>
-
-            <ul class="change-list">
-
-                <li>Player Runtime Metadata Foundation.</li>
-                <li>Runtime Metadata Session Binding.</li>
-                <li>Runtime Metadata State Binding.</li>
-                <li>Runtime Metadata Validation.</li>
-                <li>Runtime Metadata Integrity Validation.</li>
-                <li>Runtime Metadata Cleanup.</li>
-                <li>Runtime Metadata Debug Foundation.</li>
-
-            </ul>
-
-        </section>
-
-
-        <section class="section">
-
-            <div class="section-title">Architecture</div>
-
-            <div class="architecture">
-
-                <div>PLAYER</div>
-                <div>│</div>
-
-                <div>├── Identity</div>
-                <div>├── Session</div>
-                <div>├── State</div>
-                <div>├── Data</div>
-                <div>├── State History</div>
-                <div>├── Transition Audit</div>
-                <div>├── Spawn Context</div>
-                <div>├── Player Context</div>
-                <div>├── Access Decision</div>
-                <div>├── Lifecycle Event</div>
-                <div>│</div>
-                <div>└── <span class="gold">Runtime Metadata</span></div>
-
-            </div>
-
-        </section>
-
-
-        <section class="section">
-
-            <div class="section-title">Metadata Flow</div>
-
-            <div class="architecture">
-
-                <div class="gold">Player Session</div>
-                <div>↓</div>
-                <div>Runtime Metadata Session Binding</div>
-                <div>↓</div>
-                <div class="blue">Runtime Metadata</div>
-                <div>↓</div>
-                <div>State Binding</div>
-                <div>↓</div>
-                <div>Validation</div>
-                <div>↓</div>
-                <div>Integrity Validation</div>
-                <div>↓</div>
-                <div class="green">Debug / Cleanup</div>
-
-            </div>
-
-        </section>
-
-
-        <section class="section">
-
-            <div class="section-title">Scope</div>
-
-            <div class="scope-grid">
-
-                <div class="scope-box">
-
-                    <h4>Included</h4>
-
-                    <ul>
-                        <li>Runtime Metadata</li>
-                        <li>Session Binding</li>
-                        <li>State Binding</li>
-                        <li>Validation</li>
-                        <li>Integrity</li>
-                        <li>Cleanup</li>
-                        <li>Debug</li>
-                    </ul>
+                    <div class="architecture-card reveal delay-2">
+                        <span class="architecture-number">06</span>
+                        <h3>Storage</h3>
+                        <p>
+                            Persistence disiapkan sebagai layer terpisah agar
+                            storage dapat berkembang di masa depan.
+                        </p>
+                        <code>storage/</code>
+                    </div>
 
                 </div>
 
+            </div>
+        </section>
 
-                <div class="scope-box not">
 
-                    <h4>Not Included</h4>
+        <!-- =====================================================
+             Q&A
+        ====================================================== -->
 
-                    <ul>
-                        <li>Account</li>
-                        <li>Password</li>
-                        <li>Character</li>
-                        <li>Money</li>
-                        <li>Inventory</li>
-                        <li>Job</li>
-                        <li>Property</li>
-                        <li>Database</li>
-                        <li>Command</li>
-                        <li>Gameplay</li>
-                    </ul>
+        <section class="section faq" id="faq">
+            <div class="container">
+
+                <div class="section-header reveal">
+                    <span class="eyebrow">Frequently Asked Questions</span>
+
+                    <h2>Q&A</h2>
+
+                    <p class="section-description">
+                        Beberapa pertanyaan umum mengenai Crystal Roleplay
+                        dan proses development project.
+                    </p>
+                </div>
+
+                <div class="faq-list">
+
+
+                    <div class="faq-item reveal">
+                        <button class="faq-question" type="button">
+                            <span>Apa itu Crystal Roleplay?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>
+                                    Crystal Roleplay adalah custom San Andreas
+                                    Multiplayer roleplay project yang sedang
+                                    dikembangkan oleh Muhammad Rizal.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="faq-item reveal delay-1">
+                        <button class="faq-question" type="button">
+                            <span>Apakah Crystal Roleplay sudah public?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>
+                                    Belum. Project masih berada dalam tahap
+                                    development dan foundation system masih
+                                    terus dikembangkan sebelum masuk ke tahap
+                                    public release.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="faq-item reveal delay-2">
+                        <button class="faq-question" type="button">
+                            <span>Platform apa yang digunakan?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>
+                                    Crystal Roleplay dikembangkan untuk
+                                    San Andreas Multiplayer (SA-MP).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="faq-item reveal">
+                        <button class="faq-question" type="button">
+                            <span>Mengapa foundation dibuat terlebih dahulu?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>
+                                    Karena sistem roleplay yang besar membutuhkan
+                                    dasar yang konsisten. Dengan foundation yang
+                                    kuat, sistem account, character, gameplay,
+                                    command dan fitur lainnya dapat dikembangkan
+                                    dengan struktur yang lebih terkontrol.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="faq-item reveal delay-1">
+                        <button class="faq-question" type="button">
+                            <span>Apa versi foundation terbaru?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>
+                                    Versi foundation yang telah mencapai tahap
+                                    v2.9 berfokus pada Player Lifecycle Event
+                                    Foundation, termasuk validation, session
+                                    binding, integrity, sequence dan debugging.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="faq-item reveal delay-2">
+                        <button class="faq-question" type="button">
+                            <span>Apakah Crystal Roleplay meniru server lain?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>
+                                    Crystal Roleplay dikembangkan dengan arah
+                                    dan identitas sendiri. Referensi umum dapat
+                                    digunakan sebagai pembelajaran, tetapi
+                                    struktur project dan arah pengembangannya
+                                    dibuat khusus untuk CRP.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="faq-item reveal">
+                        <button class="faq-question" type="button">
+                            <span>Siapa developer Crystal Roleplay?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>
+                                    Crystal Roleplay dikembangkan oleh
+                                    Muhammad Rizal.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="faq-item reveal delay-1">
+                        <button class="faq-question" type="button">
+                            <span>Di mana perkembangan project dapat dilihat?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+
+                        <div class="faq-answer">
+                            <div class="faq-answer-inner">
+                                <p>
+                                    Halaman ini digunakan sebagai development
+                                    log untuk mencatat milestone dan arah
+                                    perkembangan Crystal Roleplay.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
             </div>
-
         </section>
 
 
-        <section class="section">
+        <!-- =====================================================
+             DEVELOPER
+        ====================================================== -->
 
-            <div class="section-title">Development Philosophy</div>
+        <section class="section developer" id="developer">
+            <div class="container">
 
-            <div class="architecture">
+                <div class="developer-grid">
 
-                <div>FOUNDATION</div>
-                <div>↓</div>
-                <div>SYSTEM DASAR</div>
-                <div>↓</div>
-                <div>CORE MECHANIC</div>
-                <div>↓</div>
-                <div>INTEGRATION</div>
-                <div>↓</div>
-                <div>COMMAND</div>
-                <div>↓</div>
-                <div class="gold">GAMEPLAY</div>
+                    <div class="reveal">
+
+                        <span class="eyebrow">
+                            Project Developer
+                        </span>
+
+                        <h2>
+                            Built by one developer,
+                            developed with a long-term vision.
+                        </h2>
+
+                        <p>
+                            Crystal Roleplay merupakan project personal yang
+                            dikembangkan secara bertahap oleh Muhammad Rizal,
+                            dengan fokus pada struktur, consistency dan
+                            identitas project.
+                        </p>
+
+                    </div>
+
+                    <div class="developer-card reveal delay-1">
+
+                        <div class="developer-name">
+                            Muhammad Rizal
+                        </div>
+
+                        <div class="developer-role">
+                            Developer & Creator
+                        </div>
+
+                        <div style="height: 25px;"></div>
+
+                        <span>Project</span>
+                        <strong>Crystal Roleplay</strong>
+
+                        <div style="height: 18px;"></div>
+
+                        <span>Platform</span>
+                        <strong>San Andreas Multiplayer</strong>
+
+                        <div style="height: 18px;"></div>
+
+                        <span>Status</span>
+                        <strong>In Development</strong>
+
+                    </div>
+
+                </div>
 
             </div>
-
         </section>
 
-
-        <section class="section">
-
-            <div class="section-title">Developer Note</div>
-
-            <p>
-                Crystal Roleplay continues to be developed with a
-                foundation-first philosophy. v3.0 does not attempt
-                to rush into gameplay features. Instead, it strengthens
-                the runtime architecture that future systems will rely on.
-            </p>
-
-        </section>
-
-    </div>
-
-</article>
+    </main>
 
 
-<div class="no-results" id="noResults">
-    No development log matches your search.
-</div>
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer>
+        <div class="container footer-inner">
+
+            <div class="copyright">
+                © 2026
+                <strong>Muhammad Rizal</strong>
+                — Developer & Creator of Crystal Roleplay.
+                All Rights Reserved.
+            </div>
+
+            <div class="footer-project">
+                Crystal Roleplay — Development Logs
+            </div>
+
+        </div>
+    </footer>
 
 
-</div>
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
 
-</main>
+    <script>
 
+        /* =====================================================
+           NAVBAR SCROLL
+        ====================================================== */
 
-<footer>
+        const navbar = document.getElementById("navbar");
 
-    <p>
-        <strong>Crystal Roleplay</strong>
-        — Development Logs
-    </p>
-
-    <p>
-        © 2026 Muhammad Rizal — Developer of Crystal Roleplay
-    </p>
-
-</footer>
-
-
-<script>
-
-    const searchInput = document.getElementById("searchInput");
-    const releases = [...document.querySelectorAll(".release")];
-    const versionCount = document.getElementById("versionCount");
-    const noResults = document.getElementById("noResults");
-
-    function filterReleases() {
-
-        const query = searchInput.value
-            .toLowerCase()
-            .trim();
-
-        let visible = 0;
-
-        releases.forEach(release => {
-
-            const version =
-                release.dataset.version.toLowerCase();
-
-            const title =
-                release.dataset.title.toLowerCase();
-
-            const content =
-                release.innerText.toLowerCase();
-
-            const matches =
-                !query ||
-                version.includes(query) ||
-                title.includes(query) ||
-                content.includes(query);
-
-            if (matches) {
-
-                release.classList.remove("hidden");
-                visible++;
-
+        function updateNavbar() {
+            if (window.scrollY > 30) {
+                navbar.classList.add("scrolled");
             } else {
-
-                release.classList.add("hidden");
-
+                navbar.classList.remove("scrolled");
             }
+        }
 
-        });
+        window.addEventListener("scroll", updateNavbar);
+        updateNavbar();
 
-        versionCount.textContent =
-            `${visible} ${visible === 1 ? "release" : "releases"}`;
 
-        noResults.classList.toggle(
-            "show",
-            visible === 0
-        );
+        /* =====================================================
+           SCROLL REVEAL
+        ====================================================== */
 
-    }
+        const revealElements = document.querySelectorAll(".reveal");
 
-    searchInput.addEventListener(
-        "input",
-        filterReleases
-    );
-
-</script>
-
-</body>
-</html>
+        const revealObserver = new IntersectionObserver(
+            (entries
